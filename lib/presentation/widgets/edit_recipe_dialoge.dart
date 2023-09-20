@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/logic/bloc/recipe_bloc.dart';
+import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
 import 'package:test/data/models/recipe_model.dart';
 
 class EditEventRecipeDialog extends StatefulWidget {
@@ -19,15 +19,15 @@ class _EditEventRecipeDialogState extends State<EditEventRecipeDialog> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController controller_name = TextEditingController();
   TextEditingController controller_content = TextEditingController();
-  TextEditingController controller_calories = TextEditingController();
+  TextEditingController controller_category = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     isVegan = widget.calledRecipe.isVegan;
     controller_name.text = widget.calledRecipe.name;
-    controller_content.text = widget.calledRecipe.content;
-    controller_calories.text = widget.calledRecipe.calories;
+    controller_content.text = widget.calledRecipe.instructions;
+    controller_category.text = widget.calledRecipe.category.toString();
   }
 
   @override
@@ -51,7 +51,7 @@ class _EditEventRecipeDialogState extends State<EditEventRecipeDialog> {
           ),
           const SizedBox(height: 8),
           TextFormField(
-            controller: controller_calories,
+            controller: controller_category,
             validator: (value) => (value == null || int.parse(value) < 300) ? "Amount is Too Low" : null,
             decoration: InputDecoration(
                 hintText: "How Much Calories It Has?",
@@ -83,7 +83,8 @@ class _EditEventRecipeDialogState extends State<EditEventRecipeDialog> {
               style: TextButton.styleFrom(elevation: 5, backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 12)),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Recipe queryRecipe = Recipe(id: "${int.parse(widget.calledRecipe.id)}", name: controller_name.text, isVegan: isVegan, content: controller_content.text, calories: controller_calories.text);
+                  Recipe queryRecipe = Recipe(id: widget.calledRecipe.id, name: controller_name.text, isVegan: isVegan, instructions: controller_content.text, category: controller_category.text);
+                  //id: widget.calledRecipe.id,
                   // widget.callerContext.read<RecipeBloc>().add(EditEventRecipe(queryRecipe));
                   BlocProvider.of<RecipeBloc>(context).add(EditRecipeEvent(queryRecipe));
                   Navigator.pop(context);

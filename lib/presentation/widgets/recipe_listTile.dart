@@ -18,12 +18,18 @@ class RecipeListTile extends Equatable {
           tilePadding: const EdgeInsets.all(10),
           shape: RoundedRectangleBorder(side: const BorderSide(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(20)),
           title: Text(recipeItem.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20, color: Colors.black)),
-          // Text("${int.parse(recipeItem.id) + 1}", style: const TextStyle(color: Colors.black))
-          leading: CircleAvatar(backgroundColor: Colors.amber[200], child: recipeItem.isVegan ? const Icon(Icons.emoji_emotions_rounded, size: 30, color: Colors.green) : const Icon(Icons.outlet_rounded, size: 30, color: Colors.red)),
+          leading: ClipRRect(
+            borderRadius: BorderRadiusDirectional.circular(10),
+            child: Image.network(
+              recipeItem.thumbnail ?? "NULL",
+              errorBuilder: (context, error, stackTrace) => CircleAvatar(backgroundColor: Colors.amber[200], child: const Icon(Icons.local_dining_rounded, size: 30, color: Colors.grey)),
+            ),
+          ),
+          // recipeItem.isVegan ? const Icon(Icons.emoji_emotions_rounded, size: 30, color: Colors.green): const Icon(Icons.outlet_rounded, size: 30, color: Colors.red)
           childrenPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-          subtitle: Text("${recipeItem.calories} Cal", style: const TextStyle(fontSize: 16)),
+          subtitle: Text("Category: ${recipeItem.category}", style: const TextStyle(fontSize: 16)),
           children: [
-            Text(recipeItem.content, style: const TextStyle(fontSize: 16)),
+            Text(recipeItem.instructions, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 15),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               FloatingActionButton(

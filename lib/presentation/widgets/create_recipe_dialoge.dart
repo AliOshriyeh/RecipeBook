@@ -1,14 +1,18 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/logic/bloc/recipe_bloc.dart';
+import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
 import 'package:test/data/models/recipe_model.dart';
 
 class CreateRecipeDialog extends StatefulWidget {
-  final String lastID;
+  // final int lastID;
 
-  const CreateRecipeDialog({super.key, required this.lastID});
+  const CreateRecipeDialog({
+    super.key,
+    // required this.lastID,
+  });
 
   @override
   State<CreateRecipeDialog> createState() => _CreateRecipeDialogState();
@@ -19,12 +23,12 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController controller_name = TextEditingController();
   TextEditingController controller_content = TextEditingController();
-  TextEditingController controller_calories = TextEditingController();
+  TextEditingController controller_category = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    controller_calories.text = "0";
+    controller_category.text = "0";
   }
 
   @override
@@ -47,7 +51,8 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
           ),
           const SizedBox(height: 8),
           TextFormField(
-            controller: controller_calories,
+            controller: controller_category,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
             keyboardType: TextInputType.number,
             validator: (value) => (value == null || int.parse(value) < 300) ? "Amount is Too Low" : null,
             decoration: InputDecoration(
@@ -81,9 +86,14 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
               style: TextButton.styleFrom(elevation: 5, backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 12)),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Recipe queryRecipe = Recipe(id: "${int.parse(widget.lastID) + 1}", name: controller_name.text, isVegan: isVegan, content: controller_content.text, calories: controller_calories.text);
+                  //As Sqflite Item.id is different from Recipe.id, AutoIncreament feature in Sqflite
+                  Recipe queryRecipe = Recipe(name: controller_name.text, isVegan: isVegan, instructions: controller_content.text, category: controller_category.text);
+                  //id: widget.lastID + 1,
                   // widget.callerContext.read<RecipeBloc>().add(AddEventRecipe(queryRecipe));
+                  // DatabaseProvider.db.insert(queryRecipe).then((storedfood) => print(storedfood));
+
                   BlocProvider.of<RecipeBloc>(context).add(AddRecipeEvent(queryRecipe));
+
                   Navigator.pop(context);
                 }
               },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/logic/bloc/recipe_bloc.dart';
+import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
 import 'package:test/data/models/recipe_model.dart';
 
 class DeleteRecipeDialog extends StatelessWidget {
