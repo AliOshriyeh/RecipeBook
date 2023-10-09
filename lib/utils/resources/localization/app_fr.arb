@@ -1,0 +1,7 @@
+{
+        "language": "Français",
+        "helloWorld": "Bonjour le monde",
+        "apptitle": "Livre de recettes",
+        "hello": "Bonjour {username}",
+        "ingredients": "CHANGEIT"
+}

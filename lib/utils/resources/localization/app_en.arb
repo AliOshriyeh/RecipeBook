@@ -1,0 +1,28 @@
+{
+        "language": "English",
+        "@language": {
+            "description": "The current language"
+        },
+
+        "helloWorld": "HelloWorld",
+        "@helloWorld": {
+            "description": "A programmer's first task"
+        },
+
+        "apptitle": "Recipe Book",
+        "@multilanguage": {
+            "description": "App's title"
+        },
+
+        "hello": "Hello {username}",
+        "@hello": {
+            "description": "A welcome message",
+            "placeholder": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "ingredients": "ingredients"
+}
