@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
 
 class DeleteRecipeDialog extends StatelessWidget {
   final Recipe calledRecipe;
@@ -21,8 +22,21 @@ class DeleteRecipeDialog extends StatelessWidget {
         TextButton.icon(
             style: TextButton.styleFrom(elevation: 5, backgroundColor: Colors.red, padding: const EdgeInsets.symmetric(horizontal: 12)),
             onPressed: () {
+              context.read<RecipeBloc>().add(RemoveRecipeEvent(calledRecipe));
               // callerContext.read<RecipeBloc>().add(RemoveRecipeEvent(calledRecipe));
-              BlocProvider.of<RecipeBloc>(context).add(RemoveRecipeEvent(calledRecipe));
+              // BlocProvider.of<RecipeBloc>(context).add(RemoveRecipeEvent(calledRecipe));
+              toastification.show(
+                context: context,
+                type: ToastificationType.success,
+                style: ToastificationStyle.flatColored,
+                title: '${calledRecipe.name.toUpperCase()} Recipe Deleted',
+                description: 'The recipe #${calledRecipe.id} was successfully removed.',
+                alignment: Alignment.bottomCenter,
+                autoCloseDuration: const Duration(seconds: 4),
+                animationBuilder: (context, animation, alignment, child) => FadeTransition(opacity: animation, child: child),
+                borderRadius: BorderRadius.circular(100.0),
+                boxShadow: highModeShadow,
+              );
               Navigator.pop(context);
             },
             icon: const Icon(Icons.check, color: Colors.white, size: 20),

@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:test/presentation/views/homescreen.dart';
-import 'package:test/presentation/views/globalrecipe_screen.dart';
 import 'package:test/presentation/views/setting_screen.dart';
-import 'package:test/presentation/views/localrecipe_screen.dart';
+import 'package:test/presentation/views/global_recipe_screen.dart';
+import 'package:test/presentation/views/local_recipe_screen.dart';
 
 class AppRouter {
   static const ROUTE_HOME = "/";
@@ -24,7 +24,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => page);
       case ROUTE_ONLINE:
         const page = GlobalRecipeScreen();
-        return MaterialPageRoute(builder: (_) => page);
+        return MaterialPageRoute(builder: (_) => page, maintainState: false);
       case ROUTE_SETTINGS:
         const page = SettingScreen();
         return MaterialPageRoute(builder: (_) => page);

@@ -9,13 +9,18 @@ sealed class OnlineRecipeEvent extends Equatable {
 }
 
 //Event Designed for READING The Elements from API
+class InitOnlineRecipeEvent extends OnlineRecipeEvent {
+  const InitOnlineRecipeEvent(super.recipe);
+}
+
+//Event Designed for READING The Elements from API
 class LoadOnlineRecipeEvent extends OnlineRecipeEvent {
   const LoadOnlineRecipeEvent(super.recipe);
 }
 
-//Event Designed for Getting The Elements  from API
-class GetOnlineRecipeEvent extends OnlineRecipeEvent {
-  const GetOnlineRecipeEvent(super.recipe);
+//Event Designed for READING The Elements from API
+class StreamOnlineRecipeEvent extends OnlineRecipeEvent {
+  const StreamOnlineRecipeEvent(super.recipe);
 }
 
 // //Event Designed for CREATING New Elements in API

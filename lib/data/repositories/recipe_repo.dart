@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:test/data/data_providers/remote/recipe_API.dart';
+import 'package:test/data/models/category_model.dart';
 import 'package:test/data/models/recipe_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,6 +20,21 @@ class RecipeRepository {
         foodList.add(food);
       }
       return foodList;
+    }
+  }
+
+  Future<List<Category>> getAllCategories() async {
+    final http.Response? result = await api.getRawCategories();
+    if (result == null) {
+      return [Category.nullcategory];
+    } else {
+      List<Category> cateList = [];
+      final List<dynamic> categories = json.decode(result.body)["categories"];
+      for (var currentCate in categories) {
+        Category category = Category.fromJSON(currentCate);
+        cateList.add(category);
+      }
+      return cateList;
     }
   }
 

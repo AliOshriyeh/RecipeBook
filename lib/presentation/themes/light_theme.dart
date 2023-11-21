@@ -15,6 +15,7 @@ ThemeData lightTheme = ThemeData(
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     elevation: 10,
-    backgroundColor: Colors.orange[800],
+    // foregroundColor: Colors.orange.shade300,
+    backgroundColor: Colors.orange.shade300,
   ),
 );

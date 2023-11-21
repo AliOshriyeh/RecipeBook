@@ -12,9 +12,10 @@ class Recipe extends Equatable {
   final String name;
   final String origin;
   final String category;
-  final String instructions;
-  final List<String> ingredients;
   final String? thumbnail;
+  final String instructions;
+  final List<String> measures;
+  final List<String> ingredients;
   // final bool isVegan;
 
   const Recipe({
@@ -22,14 +23,15 @@ class Recipe extends Equatable {
     required this.name,
     required this.origin,
     required this.category,
+    required this.measures,
+    required this.thumbnail,
     required this.ingredients,
     required this.instructions,
     // required this.isVegan,
-    this.thumbnail,
   });
 
   @override
-  List<Object?> get props => [id, name, origin, category, ingredients, instructions, thumbnail]; //isVegan
+  List<Object?> get props => [id, name, origin, category, ingredients, instructions, thumbnail, measures]; //isVegan
 
   //Converting App Object to Database Item⁡
   Map<String, dynamic> toMap() {
@@ -44,6 +46,7 @@ class Recipe extends Equatable {
       DatabaseProvider.COLUMN_NAME: name,
       DatabaseProvider.COLUMN_ORIGIN: origin,
       DatabaseProvider.COLUMN_CATEGORY: category,
+      DatabaseProvider.COLUMN_THUMBNAIL: thumbnail,
       DatabaseProvider.COLUMN_INSTRUCTION: instructions,
       DatabaseProvider.COLUMN_INGREDIENTS: ingredientSuperStr,
       // DatabaseProvider.COLUMN_ID: id,
@@ -60,6 +63,7 @@ class Recipe extends Equatable {
     var queryname = map[DatabaseProvider.COLUMN_NAME];
     var queryorigin = map[DatabaseProvider.COLUMN_ORIGIN];
     var querycategory = map[DatabaseProvider.COLUMN_CATEGORY];
+    var querythumbnail = map[DatabaseProvider.COLUMN_THUMBNAIL];
     var queryingredients = map[DatabaseProvider.COLUMN_INGREDIENTS];
     var queryinstruction = map[DatabaseProvider.COLUMN_INSTRUCTION];
     // var queryisvegan = map[DatabaseProvider.COLUMN_VEGAN] == 1 ? true : false;
@@ -67,31 +71,71 @@ class Recipe extends Equatable {
     var queryingredientsList = queryingredients.toString().split('|');
 
     // map.forEach((key, value) => print("$key -> $value AS ${value.runtimeType}"));
-    return Recipe(id: queryid, name: queryname, origin: queryorigin, category: querycategory, instructions: queryinstruction, ingredients: queryingredientsList); //isVegan: queryisvegan
+    return Recipe(id: queryid, name: queryname, origin: queryorigin, category: querycategory, instructions: queryinstruction, ingredients: queryingredientsList, thumbnail: querythumbnail, measures: []); //isVegan: queryisvegan
   }
 
-  //Converting Database Item to App Object
+  //Parsing Supabase Item to App Object
+  factory Recipe.fromSupaJSON(Map<String, dynamic> jsonRecipe) {
+    var supadid = jsonRecipe['recipeId'];
+    var supadname = jsonRecipe['recipeName'];
+    var supadorigin = jsonRecipe['recipeOrigin'];
+    var supadcategory = jsonRecipe['recipeCategory'];
+    var supadthumbnail = jsonRecipe['recipeThumb'] ?? "Null";
+    var supadinstructions = jsonRecipe['recipeInstructions'];
+    // var supadcreateddate = jsonRecipe['created_at'];
+    // var supadmodifieddate = jsonRecipe['modified_at'];
+    var supadingredientarray = List<String>.from(jsonRecipe['strIngredients'] ?? []);
+
+    // List<String> supadingredients = [];
+    // supadingredients.add(jsonRecipe['strIngredient1'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient2'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient3'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient4'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient5'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient6'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient7'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient8'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient9'] ?? "");
+    // supadingredients.add(jsonRecipe['strIngredient10'] ?? "");
+
+    List<String> supadmeasures = [];
+    supadmeasures.add(jsonRecipe['strMeasure1'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure2'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure3'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure4'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure5'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure6'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure7'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure8'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure9'] ?? "");
+    supadmeasures.add(jsonRecipe['strMeasure10'] ?? "");
+
+    var result = Recipe(id: supadid, name: supadname, origin: supadorigin, category: supadcategory, ingredients: supadingredientarray, instructions: supadinstructions, measures: supadmeasures, thumbnail: supadthumbnail); //isVegan: false,
+    return result;
+  }
+
+  //Parsing Network Item to App Object
   factory Recipe.fromJSON(Map<String, dynamic> jsonRecipe) {
-    var serverid = int.parse(jsonRecipe['idMeal']);
-    var servername = jsonRecipe['strMeal'];
-    var serverorigin = jsonRecipe['strArea'];
-    var servercategory = jsonRecipe['strCategory'];
-    var serverthumbnail = jsonRecipe['strMealThumb'];
-    var serverinstructions = jsonRecipe['strInstructions'];
+    var storedid = int.parse(jsonRecipe['idMeal']);
+    var storedname = jsonRecipe['strMeal'];
+    var storedorigin = jsonRecipe['strArea'];
+    var storedcategory = jsonRecipe['strCategory'];
+    var storedthumbnail = jsonRecipe['strMealThumb'];
+    var storedinstructions = jsonRecipe['strInstructions'];
 
-    List<String> serveringredients = [];
-    serveringredients.add(jsonRecipe['strIngredient1']);
-    serveringredients.add(jsonRecipe['strIngredient2']);
-    serveringredients.add(jsonRecipe['strIngredient3']);
-    serveringredients.add(jsonRecipe['strIngredient4']);
-    serveringredients.add(jsonRecipe['strIngredient5']);
-    serveringredients.add(jsonRecipe['strIngredient6']);
-    serveringredients.add(jsonRecipe['strIngredient7']);
-    serveringredients.add(jsonRecipe['strIngredient8']);
-    serveringredients.add(jsonRecipe['strIngredient9']);
-    serveringredients.add(jsonRecipe['strIngredient10']);
+    List<String> storedingredients = [];
+    storedingredients.add(jsonRecipe['strIngredient1']);
+    storedingredients.add(jsonRecipe['strIngredient2']);
+    storedingredients.add(jsonRecipe['strIngredient3']);
+    storedingredients.add(jsonRecipe['strIngredient4']);
+    storedingredients.add(jsonRecipe['strIngredient5']);
+    storedingredients.add(jsonRecipe['strIngredient6']);
+    storedingredients.add(jsonRecipe['strIngredient7']);
+    storedingredients.add(jsonRecipe['strIngredient8']);
+    storedingredients.add(jsonRecipe['strIngredient9']);
+    storedingredients.add(jsonRecipe['strIngredient10']);
 
-    return Recipe(id: serverid, name: servername, origin: serverorigin, category: servercategory, ingredients: serveringredients, instructions: serverinstructions, thumbnail: serverthumbnail); //isVegan: false,
+    return Recipe(id: storedid, name: storedname, origin: storedorigin, category: storedcategory, ingredients: storedingredients, instructions: storedinstructions, thumbnail: storedthumbnail, measures: []); //isVegan: false,
   }
 
   static Recipe nullRecipe = const Recipe(
@@ -99,6 +143,7 @@ class Recipe extends Equatable {
     name: "NULL",
     origin: "NULL",
     category: "NULL",
+    measures: [],
     ingredients: [],
     instructions: "NULL",
     thumbnail: "NULL",

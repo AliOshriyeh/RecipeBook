@@ -13,16 +13,9 @@ class HamburgerMenu extends StatelessWidget {
           const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.orange,
+              image: DecorationImage(image: AssetImage("assets/images/drawer0.jpg"), fit: BoxFit.fitHeight, alignment: Alignment.centerLeft),
             ),
-            child: Center(
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            child: SizedBox(), // child: Center(child: Text('Menu', style: TextStyle(fontSize: 30, color: Colors.white))),
           ),
           ListTile(
             title: const Text('Online Recipes'),

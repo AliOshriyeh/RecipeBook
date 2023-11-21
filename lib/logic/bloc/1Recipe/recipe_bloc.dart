@@ -16,7 +16,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         var _recipes = await DatabaseProvider.db.getFoods();
         emit(RecipeLoaded(_recipes));
       } catch (e) {
-        print(e); //TODO - Snackbar
+        print("++ ERROR: $e ++"); //TODO - Snackbar
+        rethrow;
       }
       DatabaseProvider.db.close();
     });
@@ -29,7 +30,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          print(e); //TODO - Snackbar
+          print("++ ERROR: $e ++"); //TODO - Snackbar
+          rethrow;
         }
 
         DatabaseProvider.db.close();
@@ -44,7 +46,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          print(e);
+          print("++ ERROR: $e ++");
+          rethrow;
         }
         DatabaseProvider.db.close();
       }
@@ -58,7 +61,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          print(e);
+          print("++ ERROR: $e ++");
+          rethrow;
         }
         DatabaseProvider.db.close();
       }

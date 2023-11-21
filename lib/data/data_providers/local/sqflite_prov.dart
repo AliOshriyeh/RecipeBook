@@ -12,6 +12,7 @@ class DatabaseProvider {
   static const String COLUMN_NAME = "name";
   static const String COLUMN_ORIGIN = "origin";
   static const String COLUMN_CATEGORY = "category";
+  static const String COLUMN_THUMBNAIL = "thumbnail";
   static const String COLUMN_INGREDIENTS = "ingredients";
   static const String COLUMN_INSTRUCTION = "instruction";
   // static const String COLUMN_VEGAN = "isvegan";
@@ -35,7 +36,7 @@ class DatabaseProvider {
         await Directory(dirname(path)).create(recursive: true);
         return initExecute(path);
       } catch (e) {
-        print(e);
+        print("++ ERROR: $e ++");
       }
       throw UnimplementedError();
     }
@@ -53,6 +54,7 @@ class DatabaseProvider {
           "$COLUMN_NAME TEXT,"
           "$COLUMN_ORIGIN TEXT,"
           "$COLUMN_CATEGORY TEXT,"
+          "$COLUMN_THUMBNAIL TEXT,"
           "$COLUMN_INGREDIENTS TEXT,"
           "$COLUMN_INSTRUCTION TEXT"
           // "$COLUMN_VEGAN INTEGER"
@@ -65,7 +67,7 @@ class DatabaseProvider {
   Future<List<Recipe>> getFoods() async {
     print("Fetching Foods from Database...");
     final databaseActual = await db.database;
-    var foods = await databaseActual.query(TABLE_RECIPE, columns: [COLUMN_ID, COLUMN_NAME, COLUMN_ORIGIN, COLUMN_CATEGORY, COLUMN_INGREDIENTS, COLUMN_INSTRUCTION]);
+    var foods = await databaseActual.query(TABLE_RECIPE, columns: [COLUMN_ID, COLUMN_NAME, COLUMN_ORIGIN, COLUMN_CATEGORY, COLUMN_THUMBNAIL, COLUMN_INGREDIENTS, COLUMN_INSTRUCTION]);
     // print("DB Log: $foods");
     List<Recipe> foodList = [];
     foods.forEach((currentFood) {
