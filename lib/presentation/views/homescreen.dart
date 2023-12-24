@@ -1,11 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:full_screen_image/full_screen_image.dart';
-import 'package:test/logic/cubit/4OnlineShowcase/online_showcase_cubit.dart';
 import 'package:test/presentation/widgets/hamburger_menu.dart';
+import 'package:test/logic/cubit/4OnlineShowcase/online_showcase_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -34,38 +35,44 @@ class HomeScreen extends StatelessWidget {
                         ? const Center(child: Text("No Recipes Registered Yet!"))
                         : CarouselSlider(
                             options: CarouselOptions(
-                              autoPlay: true,
+                              autoPlay: false,
                               enlargeCenterPage: true,
                               height: MediaQuery.of(context).size.height * 0.35,
                             ),
                             items: state.randomList.map((item) {
                               return Builder(
                                 builder: (BuildContext context) {
-                                  return Stack(
-                                    children: [
-                                      FullScreenWidget(
-                                        disposeLevel: DisposeLevel.Low,
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadiusDirectional.circular(10),
-                                            child: Image(
-                                              image: NetworkImage(item.thumbnail ?? "NULL"),
-                                              fit: BoxFit.fitWidth,
-                                              width: MediaQuery.of(context).size.width,
-                                              errorBuilder: (context, error, stackTrace) => CircleAvatar(backgroundColor: Colors.amber[200], child: const Icon(Icons.local_dining_rounded, size: 30, color: Colors.grey)),
-                                            )),
-                                      ),
-                                      //FIXME - Change the Slider's design- Make It Better
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Text(item.name,
-                                            style: TextStyle(
-                                              fontSize: 40,
-                                              color: Colors.deepOrangeAccent,
-                                              fontWeight: FontWeight.bold,
-                                              backgroundColor: Colors.white.withOpacity(0.8),
-                                            )),
-                                      ),
-                                    ],
+                                  return Container(
+                                    //Quick fix for when the error is build. it makes the error card more beatiful
+                                    decoration: item.thumbnail == null ? BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.amber.shade200.withOpacity(0.5), width: 1)) : null,
+                                    child: Stack(
+                                      children: [
+                                        FullScreenWidget(
+                                          disposeLevel: DisposeLevel.Low,
+                                          child: ClipRRect(
+                                              borderRadius: BorderRadiusDirectional.circular(10),
+                                              child: Image(
+                                                //FIXME - Null Address producess error and the error builder doesn't catch it.
+                                                // Fix it by putting a static image address
+                                                image: CachedNetworkImageProvider(item.thumbnail ?? 'NULL'), // NetworkImage(item.thumbnail ?? 'NULL'),
+                                                fit: BoxFit.fitWidth,
+                                                width: MediaQuery.of(context).size.width,
+                                                errorBuilder: (context, error, stackTrace) => Center(child: Container(color: Colors.amber[200], child: const Icon(Icons.dinner_dining_rounded, size: 100, color: Colors.grey))),
+                                              )),
+                                        ),
+                                        //FIXME - Change the Slider's design - Make It Better
+                                        Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Text(item.name,
+                                              style: TextStyle(
+                                                fontSize: 40,
+                                                color: Colors.deepOrangeAccent,
+                                                fontWeight: FontWeight.bold,
+                                                backgroundColor: Colors.white.withOpacity(0.8),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 },
                               );
@@ -90,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                   if (state is OnlineShowcaseInitial) {
                     return const Center(child: CircularProgressIndicator(color: Colors.red));
                   } else if (state is OnlineShowcaseLoaded) {
-                    // print(state.categoryList);
+                    // debugPrint(state.categoryList);
                     return Padding(
                       padding: const EdgeInsets.all(8),
                       child: state.categoryList.first.id == -1
@@ -109,12 +116,12 @@ class HomeScreen extends StatelessWidget {
                                       ClipRRect(
                                           borderRadius: BorderRadiusDirectional.circular(10),
                                           child: Image(
-                                              image: NetworkImage(state.categoryList[index].thumbnail),
+                                              image: CachedNetworkImageProvider(state.categoryList[index].thumbnail), //NetworkImage(state.categoryList[index].thumbnail),
                                               fit: BoxFit.fitWidth,
                                               width: MediaQuery.of(context).size.width * 0.4,
                                               errorBuilder: (context, error, stackTrace) => CircleAvatar(
                                                     backgroundColor: Colors.amber[200],
-                                                    child: const Icon(Icons.local_dining_rounded, size: 30, color: Colors.grey),
+                                                    child: const Icon(Icons.dinner_dining_rounded, size: 30, color: Colors.grey),
                                                   ))),
                                       Text(
                                         state.categoryList[index].name,
