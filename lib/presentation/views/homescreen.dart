@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:test/presentation/widgets/hamburger_menu.dart';
 import 'package:test/logic/cubit/4OnlineShowcase/online_showcase_cubit.dart';
@@ -35,44 +36,52 @@ class HomeScreen extends StatelessWidget {
                         ? const Center(child: Text("No Recipes Registered Yet!"))
                         : CarouselSlider(
                             options: CarouselOptions(
-                              autoPlay: false,
+                              autoPlay: true,
                               enlargeCenterPage: true,
                               height: MediaQuery.of(context).size.height * 0.35,
                             ),
                             items: state.randomList.map((item) {
                               return Builder(
                                 builder: (BuildContext context) {
-                                  return Container(
-                                    //Quick fix for when the error is build. it makes the error card more beatiful
-                                    decoration: item.thumbnail == null ? BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.amber.shade200.withOpacity(0.5), width: 1)) : null,
-                                    child: Stack(
-                                      children: [
-                                        FullScreenWidget(
-                                          disposeLevel: DisposeLevel.Low,
-                                          child: ClipRRect(
-                                              borderRadius: BorderRadiusDirectional.circular(10),
-                                              child: Image(
-                                                //FIXME - Null Address producess error and the error builder doesn't catch it.
-                                                // Fix it by putting a static image address
-                                                image: CachedNetworkImageProvider(item.thumbnail ?? 'NULL'), // NetworkImage(item.thumbnail ?? 'NULL'),
-                                                fit: BoxFit.fitWidth,
-                                                width: MediaQuery.of(context).size.width,
-                                                errorBuilder: (context, error, stackTrace) => Center(child: Container(color: Colors.amber[200], child: const Icon(Icons.dinner_dining_rounded, size: 100, color: Colors.grey))),
-                                              )),
-                                        ),
-                                        //FIXME - Change the Slider's design - Make It Better
-                                        Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Text(item.name,
-                                              style: TextStyle(
-                                                fontSize: 40,
-                                                color: Colors.deepOrangeAccent,
-                                                fontWeight: FontWeight.bold,
-                                                backgroundColor: Colors.white.withOpacity(0.8),
-                                              )),
-                                        ),
-                                      ],
-                                    ),
+                                  return Stack(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius: BorderRadiusDirectional.circular(10),
+                                          child: CachedNetworkImage(
+                                            imageUrl: item.thumbnail ?? 'NULL',
+                                            //Well done with the animation
+                                            fadeInCurve: Curves.easeIn,
+                                            fadeInDuration: const Duration(seconds: 2),
+                                            fadeOutCurve: Curves.easeOut,
+                                            fadeOutDuration: const Duration(seconds: 2),
+                                            imageBuilder: (context, imageProvider) => Stack(children: [
+                                              FullScreenWidget(
+                                                  disposeLevel: DisposeLevel.Low,
+                                                  child: Image(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.fitWidth,
+                                                    width: MediaQuery.of(context).size.width,
+                                                  )),
+
+                                              //Bottom Title //FIXME - Change the title's design - Make It Better
+                                              Align(
+                                                alignment: Alignment.bottomCenter,
+                                                child: Text(item.name,
+                                                    style: TextStyle(
+                                                      fontSize: 40,
+                                                      color: Colors.deepOrangeAccent,
+                                                      fontWeight: FontWeight.bold,
+                                                      backgroundColor: Colors.white.withOpacity(0.8),
+                                                    )),
+                                              ),
+                                            ]),
+                                            errorWidget: (context, url, error) => Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              decoration: BoxDecoration(color: Colors.amber[200]),
+                                              child: const Center(child: FaIcon(FontAwesomeIcons.linkSlash, size: 100, color: Colors.grey)),
+                                            ),
+                                          )),
+                                    ],
                                   );
                                 },
                               );

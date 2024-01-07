@@ -28,8 +28,8 @@ class Category extends Equatable {
 
   static Category nullcategory = const Category(
     id: -1,
-    name: "NULL",
-    thumbnail: "NULL",
-    description: "NULL",
+    name: 'NULL',
+    thumbnail: 'NULL',
+    description: 'NULL',
   );
 }

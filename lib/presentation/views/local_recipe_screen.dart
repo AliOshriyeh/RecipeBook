@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
+import 'package:test/presentation/router/app_router.dart';
 import 'package:test/presentation/widgets/recipe_listTile.dart';
-import 'package:test/presentation/widgets/create_recipe_dialoge.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:test/presentation/widgets/spinkit_loading.dart';
@@ -22,13 +22,16 @@ class _LocalRecipeScreenState extends State<LocalRecipeScreen> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.apptitle),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add_rounded),
-            onPressed: () => showDialog(context: context, builder: (BuildContext context) => const CreateRecipeDialog()),
-            //Navigator.of(context).pushNamed(AppRouter.ROUTE_CREATE),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            child: FloatingActionButton.small(
+              heroTag: 'CREATE',
+              child: const Icon(Icons.add_rounded),
+              onPressed: () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_CREATERECIPE),
+              //showDialog(context: context, builder: (BuildContext context) => const CreateRecipeDialog()),
+            ),
           )
         ],
-        backgroundColor: Colors.orange[800],
       ),
       body: Center(
         child: BlocBuilder<RecipeBloc, RecipeState>(builder: (context, recipeState) {
@@ -41,7 +44,6 @@ class _LocalRecipeScreenState extends State<LocalRecipeScreen> {
                 : ListView.builder(
                     itemCount: recipeState.recipes.length,
                     itemBuilder: (context, index) {
-                      // print(recipeState.recipes[index]);
                       return RecipeListTile(parentContext: context, recipeItem: recipeState.recipes[index], editable: true).display;
                     });
           } else {

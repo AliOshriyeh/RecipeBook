@@ -1,6 +1,21 @@
 // ignore_for_file: file_names
 
-List<String> categoryList = ["Beef", "Chicken", "Dessert", "Lamb", "Miscellaneous", "Pasta", "Pork", "Seafood", "Side", "Starter", "Vegan", "Vegetarian", "Breakfast", "Goat"];
+import 'package:test/data/models/category_model.dart';
+
+Map<String, Category> categoryMap = {
+  "Unspecified": const Category(id: 0, name: "Unspecified", thumbnail: 'NULL', description: "Meals typically consumed in the morning, such as cereal, toast, eggs, pancakes, oatmeal, etc."),
+  "Breakfast": const Category(id: 0, name: "Breakfast", thumbnail: 'NULL', description: "Meals typically consumed in the morning, such as cereal, toast, eggs, pancakes, oatmeal, etc."),
+  "Brunch": const Category(id: 1, name: "Lunch", thumbnail: 'NULL', description: "A combination of breakfast and lunch, often enjoyed on weekends and featuring a variety of dishes like omelets, sandwiches, salads, and pastries."),
+  "Lunch": const Category(id: 2, name: "Dinner", thumbnail: 'NULL', description: "Midday meals that can include sandwiches, salads, soups, wraps, rice bowls, and other light or substantial options."),
+  "Dinner": const Category(
+      id: 3, name: "Snacks", thumbnail: 'NULL', description: "The main meal of the day, often more substantial and including a wider variety of dishes. Dinner can consist of proteins (such as grilled chicken, steak, or fish), vegetables, grains (like rice or pasta), and side dishes."),
+  "Snacks": const Category(id: 4, name: "Appetizers", thumbnail: 'NULL', description: "Small bites enjoyed between meals, such as fruits, nuts, granola bars, popcorn, chips, or yogurt."),
+  "Appetizers": const Category(id: 5, name: "Main Course", thumbnail: 'NULL', description: "Small portions of food served before a main course during a meal or as part of a social gathering. Examples include bruschetta, sliders, chicken wings, or spring rolls."),
+  "Main Course": const Category(id: 6, name: "Main Course", thumbnail: 'NULL', description: "The primary dish of a meal, typically featuring a protein source (such as meat, fish, or tofu) along with sides like vegetables, grains, or potatoes."),
+  "Side Dishes": const Category(id: 7, name: "Side Dishes", thumbnail: 'NULL', description: "Accompaniments to the main course, such as mashed potatoes, roasted vegetables, steamed rice, or pasta salad."),
+  "Desserts": const Category(id: 8, name: "Desserts", thumbnail: 'NULL', description: "Sweet treats served after a meal, including cakes, pies, ice cream, cookies, fruit salads, or puddings."),
+  "Beverages": const Category(id: 9, name: "Beverages", thumbnail: 'NULL', description: "Drinks that accompany meals, such as water, juices, soft drinks, tea, coffee, or wine."),
+};
 
 List<String> countryList = [
   "Of No Origin",

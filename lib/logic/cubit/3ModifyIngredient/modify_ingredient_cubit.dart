@@ -6,32 +6,34 @@ import 'package:equatable/equatable.dart';
 part 'modify_ingredient_state.dart';
 
 class ModifyIngredientCubit extends Cubit<ModifyIngredientState> {
-  ModifyIngredientCubit() : super(ModifyIngredientInitial([]));
+  ModifyIngredientCubit() : super(ModifyIngredientInitial([], []));
 
-  void initialSetup() => emit(ModifyIngredientInitial([]));
-  void clearAllIngredient() => emit(ModifyIngredientLoaded([]));
+  void initialSetup() => emit(ModifyIngredientInitial([], []));
+  void clearAllIngredient() => emit(ModifyIngredientLoaded([], []));
 
-  void refreshIngredient(List<String>? storedList) {
-    if (storedList == null) {
-      emit(ModifyIngredientLoaded(state.ingredientList)); // In Case of refreshing the Cubit's State
+  void reloadIngredients(List<String>? storedIngList, List<int>? storedMsrList) {
+    if (storedIngList == null) {
+      //Just for Reload Purpose - resend the list
+      emit(ModifyIngredientLoaded(state.ingredientList, state.measureList)); // In Case of refreshing the Cubit's State
     } else {
-      emit(ModifyIngredientLoaded(storedList)); // In Case of recalling already-saved data from database
+      //If something changed
+      emit(ModifyIngredientLoaded(storedIngList, storedMsrList ?? state.measureList)); // In Case of recalling already-saved data from database
     }
   }
 
-  void addIngredient(String newIngredient) {
+  void addIngredient(int index) {
     final state = this.state;
-    List<String> newIngredientList = state.ingredientList;
-    newIngredientList.add(newIngredient);
-    // print(newIngredientList);
-    return emit(IngredientAdded(newIngredientList));
+    List<int> newMeasureList = state.measureList;
+    newMeasureList[index] = newMeasureList[index] + 1;
+    // debugPrint(newMeasureList[index]);
+    return emit(IngredientAdded(state.ingredientList, newMeasureList));
   }
 
-  void removeIngredient(String oldIngredient) {
+  void removeIngredient(int index) {
     final state = this.state;
-    List<String> newIngredientList = state.ingredientList;
-    newIngredientList.remove(oldIngredient);
-    // print(newIngredientList);
-    return emit(IngredientRemoved(newIngredientList));
+    List<int> newMeasureList = state.measureList;
+    newMeasureList[index] = newMeasureList[index] - 1;
+    // debugPrint(newMeasureList[index]);
+    return emit(IngredientAdded(state.ingredientList, newMeasureList));
   }
 }

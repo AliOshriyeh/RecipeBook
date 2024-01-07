@@ -2,16 +2,17 @@
 
 import 'dart:io';
 
+import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:full_screen_image/full_screen_image.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:test/logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
-import 'package:test/presentation/widgets/edit_recipe_dialoge.dart';
+import 'package:test/presentation/router/app_router.dart';
 import 'package:test/presentation/widgets/delete_recipe_dialog.dart';
-import 'package:test/presentation/widgets/spinkit_loading.dart';
+import 'package:test/presentation/widgets/upload_recipe_dialog.dart';
+import 'package:test/logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
 
 class RecipeListTile extends Equatable {
   final BuildContext parentContext; //TODO - Gotta remove this field somehow
@@ -22,29 +23,47 @@ class RecipeListTile extends Equatable {
 
   bool get isThumbnailURL => recipeItem.thumbnail != null && Uri.parse(recipeItem.thumbnail!).isAbsolute ? true : false;
 
+  Widget get shimemrLoad => Card(
+        elevation: 3,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        shape: RoundedRectangleBorder(side: const BorderSide(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(20)),
+        child: ExpansionTile(
+          trailing: const SizedBox(),
+          tilePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          title: Shimmer.fromColors(baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, child: Container(height: 20, color: Colors.orange)),
+          leading: Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(width: 50, height: 50, decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(50))),
+          ),
+          subtitle: Shimmer.fromColors(baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, child: Container(height: 10, color: Colors.orange)),
+        ),
+      );
+
   Widget get display => Card(
         elevation: 3,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        shape: RoundedRectangleBorder(side: const BorderSide(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(20)),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          shape: RoundedRectangleBorder(side: const BorderSide(width: 1, color: Colors.grey), borderRadius: BorderRadius.circular(20)),
           title: Text(recipeItem.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20, color: Colors.black)),
           leading: FullScreenWidget(
             disposeLevel: DisposeLevel.Low,
             child: ClipRRect(
                 borderRadius: BorderRadiusDirectional.circular(10),
                 child: Image(
-                  image: (isThumbnailURL ? NetworkImage(recipeItem.thumbnail ?? "NULL") : FileImage(File(recipeItem.thumbnail!)) as ImageProvider),
+                  //Since I Made sure that if url is null it's replced by 'NULL' There is no chance URL is null here
+                  image: (isThumbnailURL ? NetworkImage(recipeItem.thumbnail!) : FileImage(File(recipeItem.thumbnail!)) as ImageProvider),
                   fit: BoxFit.fitWidth,
                   width: MediaQuery.of(parentContext).size.width * 0.2,
-                  errorBuilder: (context, error, stackTrace) => CircleAvatar(backgroundColor: Colors.amber[200], child: const Icon(Icons.local_dining_rounded, size: 30, color: Colors.grey)),
+                  errorBuilder: (context, error, stackTrace) => CircleAvatar(backgroundColor: Colors.amber[200], child: const Icon(Icons.dinner_dining_rounded, size: 30, color: Colors.grey)),
                 )),
           ),
           // recipeItem.isVegan ? const Icon(Icons.emoji_emotions_rounded, size: 30, color: Colors.green): const Icon(Icons.outlet_rounded, size: 30, color: Colors.red)
           childrenPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           subtitle: Text("Category: ${recipeItem.category}", style: const TextStyle(fontSize: 16, color: Colors.grey)),
           children: [
-            Text(recipeItem.instructions, style: const TextStyle(fontSize: 16)),
+            SelectableText(recipeItem.instructions, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
             Align(alignment: Alignment.centerLeft, child: Text('${AppLocalizations.of(parentContext)!.ingredients}:', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800))),
             const SizedBox(height: 5),
@@ -54,34 +73,39 @@ class RecipeListTile extends Equatable {
             // So I decided to plant this blocbuilder to observe and act when the list changes.⁡⁢⁣⁢ Open for new IDEAS!⁡
             BlocBuilder<ModifyIngredientCubit, ModifyIngredientState>(
               builder: (context, state) {
-                if (state is IngredientAdded || state is IngredientRemoved) {
-                  return const SpinkitCustomLoading(typeNum: 5);
-                } else if (state is ModifyIngredientInitial || state is ModifyIngredientLoaded) {
-                  return Wrap(spacing: 8, children: recipeItem.ingredients.where((element) => element.isNotEmpty).map((element) => Chip(label: Text(element))).toList());
-                } else {
-                  // In Case The App Reads from Outside of Standard States
-                  return const Text("Something Went Wrong!");
-                }
+                List ingPlusMsr = List.generate(recipeItem.ingredients.length, (index) => {'ING': recipeItem.ingredients[index], 'MSR': recipeItem.measures[index]});
+
+                return Wrap(spacing: 8, children: ingPlusMsr.where((element) => element.isNotEmpty).map((element) => Chip(label: Text("${element['MSR']} ${element['ING']}"))).toList());
               },
             ),
             const SizedBox(height: 10),
+
             Visibility(
               visible: editable,
               child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 FloatingActionButton(
+                    heroTag: 'UPLOAD',
                     mini: true,
                     onPressed: () async {
-                      await showDialog(context: parentContext, builder: (BuildContext context) => EditEventRecipeDialog(calledRecipe: recipeItem));
+                      await showDialog(context: parentContext, builder: (BuildContext context) => UploadRecipeDialog(calledRecipe: recipeItem));
+                    },
+                    backgroundColor: Colors.yellow,
+                    child: const Icon(Icons.cloud_upload_rounded, color: Colors.white)),
+                FloatingActionButton(
+                    heroTag: 'EDIT',
+                    mini: true,
+                    onPressed: () {
+                      Navigator.of(parentContext).pushNamed(AppRouter.ROUTE_EDITRECIPE, arguments: {'RECIPE': recipeItem});
                     },
                     backgroundColor: Colors.amber,
                     child: const Icon(Icons.edit_rounded, color: Colors.white)),
                 FloatingActionButton(
-                    mini: true,
-                    onPressed: () async {
-                      await showDialog(context: parentContext, builder: (BuildContext context) => DeleteRecipeDialog(calledRecipe: recipeItem));
-                    },
-                    backgroundColor: Colors.orange[900],
-                    child: const Icon(Icons.delete_rounded, color: Colors.white)),
+                  heroTag: 'DELETE',
+                  mini: true,
+                  onPressed: () async => await showDialog(context: parentContext, builder: (BuildContext context) => DeleteRecipeDialog(calledRecipe: recipeItem)),
+                  backgroundColor: Colors.orange[900],
+                  child: const Icon(Icons.delete_rounded, color: Colors.white),
+                ),
               ]),
             ),
             const SizedBox(height: 5),

@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:test/data/models/category_model.dart';
 import 'package:test/data/models/recipe_model.dart';
@@ -32,9 +33,9 @@ class OnlineShowcaseCubit extends Cubit<OnlineShowcaseState> {
       final recipes = await repo.getAllRecipe();
       return recipes;
     } on ClientException catch (error) {
-      print(error.message);
+      debugPrint(error.message);
     } catch (e) {
-      print("++ ERROR: $e ++"); //TODO - Snackbar
+      debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
       rethrow;
     }
   }
@@ -44,9 +45,9 @@ class OnlineShowcaseCubit extends Cubit<OnlineShowcaseState> {
       final categories = await repo.getAllCategories();
       return categories;
     } on ClientException catch (error) {
-      print(error.message);
+      debugPrint(error.message);
     } catch (e) {
-      print("++ ERROR: $e ++"); //TODO - Snackbar
+      debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
       rethrow;
     }
   }

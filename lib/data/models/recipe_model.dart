@@ -14,9 +14,9 @@ class Recipe extends Equatable {
   final String category;
   final String? thumbnail;
   final String instructions;
-  final List<String> measures;
+  final List<dynamic> measures;
   final List<String> ingredients;
-  // final bool isVegan;
+  final bool authorization;
 
   const Recipe({
     this.id,
@@ -27,33 +27,35 @@ class Recipe extends Equatable {
     required this.thumbnail,
     required this.ingredients,
     required this.instructions,
-    // required this.isVegan,
+    required this.authorization,
   });
 
   @override
-  List<Object?> get props => [id, name, origin, category, ingredients, instructions, thumbnail, measures]; //isVegan
+  List<Object?> get props => [id, name, origin, category, ingredients, measures, instructions, thumbnail, authorization];
 
   //Converting App Object to Database Item⁡
   Map<String, dynamic> toMap() {
     // Since I cant Convert a List<String> to a Str ⁡⁢⁣⁢Directly⁡,
     // I will just do with iterating List's Elements and adding them to Str One At a Time⁡!
-    String ingredientSuperStr = ingredients.join('|');
+    String measuresSuperStr = measures.join('|');
+    String ingredientsSuperStr = ingredients.join('|');
 
     var map = <String, dynamic>{
       // Because We are working with Sqflite-Given-ID for every item.
       // I decided to leave id blank and fill it when insert-operation is done
-      // and the item's id is generated! ⁡⁢⁣⁣Smart Right? :)⁡
+      // and after when item's id is generated! ⁡⁢⁣⁣Smart Right? :)⁡
       DatabaseProvider.COLUMN_NAME: name,
       DatabaseProvider.COLUMN_ORIGIN: origin,
       DatabaseProvider.COLUMN_CATEGORY: category,
+      DatabaseProvider.COLUMN_MEASURES: measuresSuperStr,
       DatabaseProvider.COLUMN_THUMBNAIL: thumbnail,
       DatabaseProvider.COLUMN_INSTRUCTION: instructions,
-      DatabaseProvider.COLUMN_INGREDIENTS: ingredientSuperStr,
+      DatabaseProvider.COLUMN_INGREDIENTS: ingredientsSuperStr,
+      // DatabaseProvider.COLUMN_AUTHORIZATION: authorization, //FIXME - The Local Database doesn't support authorization for now.
       // DatabaseProvider.COLUMN_ID: id,
-      // DatabaseProvider.COLUMN_VEGAN: isVegan ? 1 : 0,
     };
 
-    // map.forEach((key, value) => print("$key -> $value AS ${value.runtimeType}"));
+    // map.forEach((key, value) => debugPrint("$key -> $value AS ${value.runtimeType}"));
     return map;
   }
 
@@ -63,15 +65,17 @@ class Recipe extends Equatable {
     var queryname = map[DatabaseProvider.COLUMN_NAME];
     var queryorigin = map[DatabaseProvider.COLUMN_ORIGIN];
     var querycategory = map[DatabaseProvider.COLUMN_CATEGORY];
+    var querymeasures = map[DatabaseProvider.COLUMN_MEASURES];
     var querythumbnail = map[DatabaseProvider.COLUMN_THUMBNAIL];
     var queryingredients = map[DatabaseProvider.COLUMN_INGREDIENTS];
     var queryinstruction = map[DatabaseProvider.COLUMN_INSTRUCTION];
-    // var queryisvegan = map[DatabaseProvider.COLUMN_VEGAN] == 1 ? true : false;
+    // var queryauthorization = map[DatabaseProvider.COLUMN_AUTHORIZATION];
 
+    var querymeasuresList = querymeasures.toString().split('|');
     var queryingredientsList = queryingredients.toString().split('|');
 
-    // map.forEach((key, value) => print("$key -> $value AS ${value.runtimeType}"));
-    return Recipe(id: queryid, name: queryname, origin: queryorigin, category: querycategory, instructions: queryinstruction, ingredients: queryingredientsList, thumbnail: querythumbnail, measures: []); //isVegan: queryisvegan
+    // map.forEach((key, value) => debugPrint("$key -> $value AS ${value.runtimeType}"));
+    return Recipe(id: queryid, name: queryname, origin: queryorigin, category: querycategory, instructions: queryinstruction, ingredients: queryingredientsList, thumbnail: querythumbnail, measures: querymeasuresList, authorization: false);
   }
 
   //Parsing Supabase Item to App Object
@@ -80,41 +84,18 @@ class Recipe extends Equatable {
     var supadname = jsonRecipe['recipeName'];
     var supadorigin = jsonRecipe['recipeOrigin'];
     var supadcategory = jsonRecipe['recipeCategory'];
-    var supadthumbnail = jsonRecipe['recipeThumb'] ?? "Null";
+    var supadthumbnail = jsonRecipe['recipeThumb'] ?? 'NULL';
     var supadinstructions = jsonRecipe['recipeInstructions'];
-    // var supadcreateddate = jsonRecipe['created_at'];
     // var supadmodifieddate = jsonRecipe['modified_at'];
     var supadingredientarray = List<String>.from(jsonRecipe['strIngredients'] ?? []);
+    var supadmeasurearray = List<String>.from(jsonRecipe['strMeasures'] ?? []);
+    var supaauthorization = jsonRecipe['recipeConfirmation'] ?? false;
 
-    // List<String> supadingredients = [];
-    // supadingredients.add(jsonRecipe['strIngredient1'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient2'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient3'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient4'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient5'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient6'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient7'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient8'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient9'] ?? "");
-    // supadingredients.add(jsonRecipe['strIngredient10'] ?? "");
-
-    List<String> supadmeasures = [];
-    supadmeasures.add(jsonRecipe['strMeasure1'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure2'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure3'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure4'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure5'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure6'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure7'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure8'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure9'] ?? "");
-    supadmeasures.add(jsonRecipe['strMeasure10'] ?? "");
-
-    var result = Recipe(id: supadid, name: supadname, origin: supadorigin, category: supadcategory, ingredients: supadingredientarray, instructions: supadinstructions, measures: supadmeasures, thumbnail: supadthumbnail); //isVegan: false,
+    var result = Recipe(id: supadid, name: supadname, origin: supadorigin, category: supadcategory, ingredients: supadingredientarray, instructions: supadinstructions, measures: supadmeasurearray, thumbnail: supadthumbnail, authorization: supaauthorization);
     return result;
   }
 
-  //Parsing Network Item to App Object
+  //Parsing Fake API Item to App Object //FIXME - Delete when build a new showcase in homepage
   factory Recipe.fromJSON(Map<String, dynamic> jsonRecipe) {
     var storedid = int.parse(jsonRecipe['idMeal']);
     var storedname = jsonRecipe['strMeal'];
@@ -135,47 +116,18 @@ class Recipe extends Equatable {
     storedingredients.add(jsonRecipe['strIngredient9']);
     storedingredients.add(jsonRecipe['strIngredient10']);
 
-    return Recipe(id: storedid, name: storedname, origin: storedorigin, category: storedcategory, ingredients: storedingredients, instructions: storedinstructions, thumbnail: storedthumbnail, measures: []); //isVegan: false,
+    return Recipe(id: storedid, name: storedname, origin: storedorigin, category: storedcategory, ingredients: storedingredients, instructions: storedinstructions, thumbnail: storedthumbnail, measures: [], authorization: true);
   }
 
   static Recipe nullRecipe = const Recipe(
     id: -1,
-    name: "NULL",
-    origin: "NULL",
-    category: "NULL",
+    name: 'No Name Specified',
+    origin: 'Of no Origin',
+    category: 'Not Selected',
     measures: [],
     ingredients: [],
-    instructions: "NULL",
-    thumbnail: "NULL",
-    // isVegan: false,
+    instructions: 'No Instructions',
+    thumbnail: 'NULL',
+    authorization: false,
   );
-
-  //!DUMMY DATA
-  // static List<Recipe> recipes = [
-  //   Recipe(
-  //       id: '0',
-  //       image: Image.asset('assets/images/Re1_zucchini_slice.jpg', fit: BoxFit.cover),
-  //       name: "Zucchini Slice",
-  //       instructions: "While the argument as to what is Australia’s national dish will always rage (is it roast lamb, green chicken curry or a barramundi burger)? One thing is for sure, zucchini slice is hands-down the national food of the home cook."),
-  //   Recipe(
-  //       id: '1',
-  //       image: Image.asset('assets/images/Re2_pumpkin_soup.jpg', fit: BoxFit.cover),
-  //       name: "Easy pumpkin soup recipe",
-  //       instructions: "The beauty of pumpkin soup _ and this classic pumpkin soup recipe in particular - is that it’s so versatile and forgiving. It’s one of the easiest meals to make with just a handful of ingredients, and it’s almost impossible to mess up."),
-  //   Recipe(
-  //       id: '2',
-  //       image: Image.asset('assets/images/Re3_fried_rice.jpg', fit: BoxFit.cover),
-  //       name: "Easy fried rice",
-  //       instructions: "Fried rice is a staple of Aussie takeaway and while we all have our favourite restaurant that makes it just the way we like it, it's a dish that is easy to replicate at home. "),
-  //   Recipe(
-  //       id: '3',
-  //       image: Image.asset('assets/images/Re4_shepherds_pie.jpg', fit: BoxFit.cover),
-  //       name: "Classic shepherd's pie",
-  //       instructions: "A classic British and Irish dish that’s loved the world over, shepherd’s pie is the ultimate comfort food. Made with lamb mince, a rich gravy and buttery mashed potatoes, this recipe has all the elements for a perfect Sunday dinner"),
-  //   Recipe(
-  //       id: '4',
-  //       image: Image.asset('assets/images/Re5_impossible_quiche.jpg', fit: BoxFit.cover),
-  //       name: "Impossible quiche",
-  //       instructions: "Don’t let the name deceive you: this ham and cheese quiche is actually incredibly possible to make. What we love about impossible quiche is that it requires no puff pastry base - you simply mix all the ingredients together, pour into the dish and voila!"),
-  // ];
 }

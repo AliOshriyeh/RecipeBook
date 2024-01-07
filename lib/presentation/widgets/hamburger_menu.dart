@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/data/repositories/supabase_repo.dart';
 import 'package:test/presentation/router/app_router.dart';
 
 class HamburgerMenu extends StatelessWidget {
@@ -19,7 +20,11 @@ class HamburgerMenu extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Online Recipes'),
-            onTap: () => Navigator.of(context).pushNamed(AppRouter.ROUTE_ONLINE),
+            onTap: () => Navigator.of(context).pushNamed(AppRouter.ROUTE_ORECIPE),
+          ),
+          ListTile(
+            title: const Text('Online Ingredients'),
+            onTap: () => Navigator.of(context).pushNamed(AppRouter.ROUTE_OINGREDIENT),
           ),
           ListTile(
             title: const Text('Personal Recipe Book'),
@@ -28,6 +33,14 @@ class HamburgerMenu extends StatelessWidget {
           ListTile(
             title: const Text('Settings'),
             onTap: () => Navigator.of(context).pushNamed(AppRouter.ROUTE_SETTINGS),
+          ),
+          ListTile(
+            title: const Text('Log Out'),
+            onTap: () {
+              final SupaRecipeRepository repo = SupaRecipeRepository();
+              Navigator.of(context).pushNamed(AppRouter.ROUTE_LOGIN);
+              repo.logout();
+            },
           ),
         ],
       ),
