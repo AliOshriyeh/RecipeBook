@@ -15,12 +15,18 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final SupaRecipeRepository repo = SupaRecipeRepository();
-  AuthenticationBloc() : super(AuthenticationIdle()) {
+  AuthenticationBloc() : super(AuthenticationIdle(List.empty())) {
     on<InitAuthEvent>((event, emit) async {
-      print("object");
       var loginValue = await ShrPrefProvider().getStrList('LOGIN-KEY+VALUE') ?? [];
       print("LOGIN VALUE: $loginValue");
-      emit(AuthenticationIdle());
+      emit(AuthenticationIdle(loginValue));
+    });
+
+    on<LogoutAuthEvent>((event, emit) async {
+      print("User Logged out #Auth Bloc");
+      await Future<void>.delayed(const Duration(seconds: 1));
+      await repo.logout();
+      emit(AuthenticationLoggedOut());
     });
 
     on<LoginAuthEvent>((event, emit) async {

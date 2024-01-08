@@ -31,6 +31,18 @@ class _LoginScreenState extends State<LoginScreen> {
   // controller_pass.text = args['PASS'];
 
   @override
+  void initState() {
+    super.initState();
+    AuthenticationBloc userAuthBloc = context.read<AuthenticationBloc>();
+    print("IN :${userAuthBloc.state.props.first}");
+    userAuthBloc.add(const LogoutAuthEvent());
+    if (userAuthBloc.state is AuthenticationIdle) {
+      print(userAuthBloc.state);
+    }
+    print("OUT :${userAuthBloc.state.props.first}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: loginscr_scafkey,

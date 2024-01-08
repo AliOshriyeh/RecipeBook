@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'authentication_bloc.dart';
 
 sealed class AuthenticationState extends Equatable {
@@ -7,7 +9,13 @@ sealed class AuthenticationState extends Equatable {
   List<Object> get props => [];
 }
 
-final class AuthenticationIdle extends AuthenticationState {}
+class AuthenticationIdle extends AuthenticationState {
+  List storedLoginValue = [];
+  AuthenticationIdle(storedLoginValue);
+
+  @override
+  List<Object> get props => [storedLoginValue];
+}
 
 //State Designed for Completed Login Process
 class AuthenticationLoggedIn extends AuthenticationState {
@@ -15,9 +23,7 @@ class AuthenticationLoggedIn extends AuthenticationState {
 }
 
 //State Designed for Completed Logout Process
-class AuthenticationLoggedOut extends AuthenticationState {
-  const AuthenticationLoggedOut();
-}
+class AuthenticationLoggedOut extends AuthenticationState {}
 
 //State Designed for Completed Logout Process
 class AuthenticationSignedUp extends AuthenticationState {
