@@ -15,11 +15,17 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final SupaRecipeRepository repo = SupaRecipeRepository();
-  AuthenticationBloc() : super(AuthenticationIdle(List.empty())) {
+
+  AuthenticationBloc() : super(AuthenticationIdle()) {
     on<InitAuthEvent>((event, emit) async {
+      print("Recalling User History  #Auth Bloc");
       var loginValue = await ShrPrefProvider().getStrList('LOGIN-KEY+VALUE') ?? [];
-      print("LOGIN VALUE: $loginValue");
-      emit(AuthenticationIdle(loginValue));
+      // print("LOGIN VALUE: $loginValue");
+      if (loginValue.isEmpty) {
+        emit(AuthenticationIdle());
+      } else {
+        emit(AuthenticationReady(loginValue));
+      }
     });
 
     on<LogoutAuthEvent>((event, emit) async {
@@ -33,10 +39,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       await Future<void>.delayed(const Duration(seconds: 1));
       var authRes = await repo.login(event.email, event.pass);
       if (authRes.runtimeType == User && authRes.aud == 'authenticated') {
-        var loginValue = await ShrPrefProvider().getStrList('LOGIN-KEY+VALUE') ?? [];
-        var newLoginValue = event.email + "|" + event.pass;
-        if (!loginValue.contains(newLoginValue)) loginValue.add(newLoginValue);
-        await ShrPrefProvider().setStrList('LOGIN-KEY+VALUE', loginValue);
+        var loginHistory = await ShrPrefProvider().getStrList('LOGIN-KEY+VALUE') ?? [];
+        var newLoginValue = (event.email) + "|" + (event.pass);
+
+        if (!loginHistory.contains(newLoginValue)) {
+          loginHistory.add(newLoginValue);
+          var isActiveLoginHistory = await ShrPrefProvider().setStrList('LOGIN-KEY+VALUE', loginHistory);
+        }
 
         toastification.show(
           context: loginscr_scafkey.currentState!.context,

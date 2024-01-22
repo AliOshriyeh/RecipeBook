@@ -75,7 +75,7 @@ class SupaRecipeRepository {
   }
 
   Future logout() async {
-    print("User is Logged out");
+    print("User Logged out #Supabase.Repo");
     final result = await api.userLogout();
     return result;
   }

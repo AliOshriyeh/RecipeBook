@@ -9,9 +9,11 @@ sealed class AuthenticationState extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthenticationIdle extends AuthenticationState {
-  List storedLoginValue = [];
-  AuthenticationIdle(storedLoginValue);
+class AuthenticationIdle extends AuthenticationState {}
+
+class AuthenticationReady extends AuthenticationState {
+  final List storedLoginValue;
+  const AuthenticationReady(this.storedLoginValue);
 
   @override
   List<Object> get props => [storedLoginValue];

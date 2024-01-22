@@ -1,10 +1,7 @@
-// ignore_for_file: avoid_renaming_method_parameters
-
+// ignore_for_file: avoid_renaming_method_parameters,
 import 'package:flutter/material.dart';
 import 'package:test/data/models/Ingredient_model.dart';
-import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
-import 'package:test/presentation/views/homescreen.dart';
-import 'package:test/presentation/views/login_screen.dart';
+import 'package:test/presentation/views/spash_screen.dart';
 import 'package:test/utils/appObserver.dart';
 import 'package:test/presentation/router/app_router.dart';
 import 'package:test/presentation/themes/dark_theme.dart';
@@ -25,6 +22,7 @@ import 'logic/bloc/2OnlineCookBook/online_cookbook_bloc.dart';
 import 'logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
 import 'logic/cubit/4OnlineShowcase/online_showcase_cubit.dart';
 import 'logic/cubit/5ModifyRecipeImage/modify_ingredient_image_cubit.dart';
+import 'logic/bloc/6Authentication/authentication_bloc.dart';
 
 void main() async {
   Bloc.observer = MyGlobalObserver();
@@ -43,7 +41,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         //NOTE - The Order is Important. Up to Down is like Parent to Child
-        BlocProvider(create: (_) => AuthenticationBloc()..add(const InitAuthEvent())),
+        BlocProvider(create: (_) => AuthenticationBloc()..add(InitAuthEvent())),
         BlocProvider(create: (_) => OnlineCookBookBloc()..add(ResetOnlineCookBookEvent(Recipe.nullRecipe, Ingredient.nullIngredient))),
         BlocProvider(create: (_) => RecipeBloc()..add(LoadRecipeEvent(Recipe.nullRecipe))),
         BlocProvider(create: (_) => OnlineShowcaseCubit()..initialSetup()),
@@ -66,7 +64,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // initialRoute: AppRouter.ROUTE_LOGIN,
         onGenerateRoute: _appRouter.onGenerateRoute,
-        onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const LoginScreen())],
+        onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const SpashScreen())],
       ),
     );
   }

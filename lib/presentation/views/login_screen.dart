@@ -4,12 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/data/data_providers/local/sharepref_prov.dart';
 import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
 import 'package:test/utils/constants/globals.dart';
-import 'package:toastification/toastification.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:test/data/repositories/supabase_repo.dart';
 import 'package:test/presentation/router/app_router.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,18 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   // controller_pass.text = args['PASS'];
 
   @override
-  void initState() {
-    super.initState();
-    AuthenticationBloc userAuthBloc = context.read<AuthenticationBloc>();
-    print("IN :${userAuthBloc.state.props.first}");
-    userAuthBloc.add(const LogoutAuthEvent());
-    if (userAuthBloc.state is AuthenticationIdle) {
-      print(userAuthBloc.state);
-    }
-    print("OUT :${userAuthBloc.state.props.first}");
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: loginscr_scafkey,
@@ -60,71 +44,89 @@ class _LoginScreenState extends State<LoginScreen> {
           ]),
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-            const SizedBox(height: 50),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Login",
-                  style: GoogleFonts.mPlusRounded1c(
-                    textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  )),
-            ),
-            const SizedBox(height: 30),
-            //Assign Email
-            TextFormField(
-              controller: controller_email,
-              validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? "Enter A Valid Email" : null,
-              enableInteractiveSelection: true,
-              selectionControls: MaterialTextSelectionControls(),
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  hintText: "Email",
-                  hintStyle: GoogleFonts.mPlusRounded1c(),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-                  focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
-            ),
-            const SizedBox(height: 8),
-            //Assign Password
-            TextFormField(
-              obscureText: passVisiblity,
-              controller: controller_pass,
-              keyboardType: TextInputType.visiblePassword,
-              validator: (value) => (value == null || value.length < 8) ? "Password is TOO Short!!" : null,
-              decoration: InputDecoration(
-                  hintText: "Password",
-                  hintStyle: GoogleFonts.mPlusRounded1c(),
-                  suffixIcon: IconButton(
-                    onPressed: () => passVisiblity = !passVisiblity,
-                    icon: Icon(passVisiblity ? Icons.visibility : Icons.visibility_off, color: Colors.black, size: 20),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-                  focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
-            ),
-            const SizedBox(height: 15),
-            OutlinedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  AuthenticationBloc userAuthBloc = context.read<AuthenticationBloc>();
-                  userAuthBloc.add(LoginAuthEvent(controller_email.text, controller_pass.text));
-                }
-              },
-              style: ButtonStyle(
-                minimumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width * 0.3, MediaQuery.of(context).size.height * 0.05)),
-                elevation: const MaterialStatePropertyAll(5),
-                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      body: BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationReady) {
+            var importedLoginHistory = state.storedLoginValue.last.split('|');
+            var importedEmail = importedLoginHistory[0];
+            var importedPass = importedLoginHistory[1];
+            controller_email.text = importedEmail;
+            controller_pass.text = importedPass;
+          }
+        },
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+              const SizedBox(height: 50),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Login",
+                    style: GoogleFonts.mPlusRounded1c(
+                      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    )),
               ),
-              child: const Text("Login", style: TextStyle(color: Colors.white)),
-            ),
-            const SizedBox(height: 8),
-            Text("Forgot Password? ", style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))),
-          ]),
+              const SizedBox(height: 30),
+              //Assign Email
+              TextFormField(
+                controller: controller_email,
+                validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? "Enter A Valid Email" : null,
+                enableInteractiveSelection: true,
+                selectionControls: MaterialTextSelectionControls(),
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                    hintText: "Email",
+                    hintStyle: GoogleFonts.mPlusRounded1c(),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                    focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
+              ),
+              const SizedBox(height: 8),
+              //Assign Password
+              TextFormField(
+                obscureText: passVisiblity,
+                controller: controller_pass,
+                keyboardType: TextInputType.visiblePassword,
+                validator: (value) => (value == null || value.length < 8) ? "Password is TOO Short!!" : null,
+                decoration: InputDecoration(
+                    hintText: "Password",
+                    hintStyle: GoogleFonts.mPlusRounded1c(),
+                    suffixIcon: IconButton(
+                      onPressed: () => controller_pass.clear(),
+                      icon: const Icon(Icons.cancel, color: Colors.black, size: 20),
+                    ),
+                    // suffixIcon: IconButton(
+                    //   onPressed: () {
+                    //     //FIXME - passVisiblity wont get updated after change. Needs a setState but I don't want to use it with bloc. Open for any suggestions.
+                    //     passVisiblity = !passVisiblity;
+                    //   },
+                    //   icon: Icon(passVisiblity ? Icons.visibility : Icons.visibility_off, color: Colors.black, size: 20),
+                    // ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                    focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    AuthenticationBloc userAuthBloc = context.read<AuthenticationBloc>();
+                    userAuthBloc.add(LoginAuthEvent(controller_email.text, controller_pass.text));
+                  }
+                },
+                style: ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width * 0.3, MediaQuery.of(context).size.height * 0.05)),
+                  elevation: const MaterialStatePropertyAll(5),
+                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                ),
+                child: const Text("Login", style: TextStyle(color: Colors.white)),
+              ),
+              const SizedBox(height: 8),
+              Text("Forgot Password?", style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))),
+            ]),
+          ),
         ),
       ),
     );

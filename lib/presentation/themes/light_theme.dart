@@ -15,9 +15,10 @@ ThemeData lightTheme = ThemeData(
       titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
     ),
     colorScheme: ColorScheme.light(
+      outline: Colors.blue.shade800,
       primary: Colors.orange.shade800,
       secondary: Colors.orange.shade500,
-      background: Colors.grey.shade300,
+      // background: Colors.grey.shade300,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       elevation: 10,

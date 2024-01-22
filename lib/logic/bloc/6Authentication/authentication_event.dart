@@ -20,7 +20,7 @@ class LoginAuthEvent extends AuthenticationEvent {
   const LoginAuthEvent(this.email, this.pass);
 
   @override
-  List<Object> get props => [email, pass];
+  List<Object> get props => [];
 }
 
 //Event Designed for User Logout
