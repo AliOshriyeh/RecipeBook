@@ -1,17 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
-import 'package:test/presentation/views/create_recipe_screen.dart';
-import 'package:test/presentation/views/edit_recipe_screen.dart';
+import 'package:test/presentation/views/home_screen.dart';
 import 'package:test/presentation/views/login_screen.dart';
-import 'package:test/presentation/views/modify_ingredients_screen.dart';
-import 'package:test/presentation/views/online_ingredient_screen.dart';
-import 'package:test/presentation/views/homescreen.dart';
-import 'package:test/presentation/views/setting_screen.dart';
-import 'package:test/presentation/views/online_recipe_screen.dart';
-import 'package:test/presentation/views/local_recipe_screen.dart';
 import 'package:test/presentation/views/signup_screen.dart';
+import 'package:test/presentation/views/setting_screen.dart';
+import 'package:test/presentation/views/edit_recipe_screen.dart';
+import 'package:test/presentation/views/local_recipe_screen.dart';
+import 'package:test/presentation/views/online_recipe_screen.dart';
+import 'package:test/presentation/views/create_recipe_screen.dart';
+import 'package:test/presentation/views/online_ingredient_screen.dart';
+import 'package:test/presentation/views/modify_ingredients_screen.dart';
 
 class AppRouter {
   static const ROUTE_HOME = "/";
@@ -67,7 +66,7 @@ class AppRouter {
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (context) {
       return Scaffold(
-        appBar: AppBar(title: const Text("ERROR"), centerTitle: true),
+        appBar: AppBar(title: const Text("Error"), centerTitle: true),
         body: const Center(child: Text("Page not Found")),
       );
     });

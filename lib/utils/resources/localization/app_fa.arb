@@ -3,5 +3,18 @@
         "helloWorld": "سلام دنیا",
         "apptitle": "کتاب آشپزی",
         "hello": "سلام {username}",
-        "ingredients": "مواد لازم"
+        "error": "خطا",
+        "recipe": "دستور آشپزی",
+        "origin": "اصل و نسب",
+        "category": "دسته غذایی",
+        "ingredients": "مواد لازم",
+        "ent_valname": "یک نام معتبر وارد کنید",
+        "ent_recname": "غذای خود را نام گذاری کنید",
+        "ent_recdesc": "طرز درست کردن غذا را توضیح بدید",
+        "ent_valdesc": "دستور پخت خیلی کوتاه است",
+        "chs_country": "یک کشور را انتخاب کنید",
+        "ent_country": "کشور مبدا را در اینجا تایپ کنید",
+        "ent_Ingredient": "مواد لازم را اینجا تایپ کنید",
+        "chs_category": "یک دسته غذایی را انتخاب کنید",
+        "chs_Ingredient": "مواد اولیه را انتخاب کنید"
 }

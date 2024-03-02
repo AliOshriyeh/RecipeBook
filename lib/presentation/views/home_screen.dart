@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                                             fadeOutDuration: const Duration(seconds: 2),
                                             imageBuilder: (context, imageProvider) => Stack(children: [
                                               FullScreenWidget(
-                                                  disposeLevel: DisposeLevel.Low,
+                                                  disposeLevel: DisposeLevel.Medium,
                                                   child: Image(
                                                     image: imageProvider,
                                                     fit: BoxFit.fitWidth,

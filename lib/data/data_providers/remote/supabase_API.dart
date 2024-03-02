@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/utils/constants/globals.dart';
 
 class SupabaseAPI {
   static const SUPABASE_URL = "https://yzstkoycdvgvubcussyl.supabase.co";
   static const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6c3Rrb3ljZHZndnViY3Vzc3lsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTcwNTM1NTMsImV4cCI6MjAxMjYyOTU1M30.oWKhLr3hmvLYS0w35YF3JxKHEwq9XAwdzCfCs6j1rTs";
 
   final supabase = Supabase.instance.client;
-
   Future getAllRawRecipe() async {
-    debugPrint("Initializing Supabase Fetch #Recipes");
+    debugPrint(printSignifier + "Initializing Supabase Fetch #Recipes");
     try {
       final query = await Supabase.instance.client.from('Recipes').select().order('recipeId', ascending: true);
       return query;
@@ -29,7 +29,7 @@ class SupabaseAPI {
   }
 
   Future getAllRawIngredient() async {
-    debugPrint("Initializing Supabase Fetch #Ingredients");
+    debugPrint(printSignifier + "Initializing Supabase Fetch #Ingredients");
     try {
       final query = await Supabase.instance.client.from('Ingredients').select();
       return query;
@@ -46,7 +46,7 @@ class SupabaseAPI {
   }
 
   Future addNewRawRecipe(Recipe recipeItem) async {
-    debugPrint("Initializing Supabase Upload #Recipes");
+    debugPrint(printSignifier + "Initializing Supabase Upload #Recipes");
     try {
       // var newId = (await getAllRawRecipe()).last['recipeId'];
       var newRecipe = await Supabase.instance.client.from('Recipes').insert({
@@ -73,7 +73,7 @@ class SupabaseAPI {
   }
 
   Future userLoginByEmail(String email, String pass) async {
-    debugPrint("Initializing Supabase Login #Email");
+    debugPrint(printSignifier + "Initializing Supabase Login #Email");
     try {
       final AuthResponse response = await supabase.auth.signInWithPassword(email: email, password: pass);
       return response;
@@ -113,15 +113,23 @@ class SupabaseAPI {
     // print('USER $user');
   }
 
+  Session? userSession() {
+    debugPrint(printSignifier + "Initializing Supabase User Session");
+    final response = supabase.auth.currentSession;
+    // print("Print Session: ${supabase.auth.currentSession}"); //This line returns the current session on restart
+    //FIXME - If user is already logged in and the session is still valid, Continue with current session
+    return response;
+  }
+
   Future userLogout() async {
-    debugPrint("Initializing Supabase Log Out");
+    debugPrint(printSignifier + "Initializing Supabase Log Out");
     final response = await supabase.auth.signOut();
     // final response = await supabase.dispose();
     return response;
   }
 
   Future getRawRecipeByName(String? name) async {
-    debugPrint("Initializing Supabase Fetch");
+    debugPrint(printSignifier + "Initializing Supabase Fetch");
     try {
       final query = await Supabase.instance.client.from('Recipes').select();
       if (name == null) {
@@ -136,14 +144,14 @@ class SupabaseAPI {
       // return error;
       rethrow;
     } on ClientException catch (e) {
-      debugPrint("++ ERROR: $e ++");
+      debugPrint(printSignifier + "++ ERROR: $e ++");
       // return error;
       rethrow;
     }
   }
 
   // Stream<List<Map<String, dynamic>>> getRawRecipeAsStream() {
-  //   debugPrint("Initializing Supabase Streaming");
+  //   debugPrint(printSignifier +"Initializing Supabase Streaming");
   //   try {
   //     final query = Supabase.instance.client.from('Recipes').stream(primaryKey: ['id']);
   //     return query;

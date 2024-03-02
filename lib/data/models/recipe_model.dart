@@ -55,7 +55,7 @@ class Recipe extends Equatable {
       // DatabaseProvider.COLUMN_ID: id,
     };
 
-    // map.forEach((key, value) => debugPrint("$key -> $value AS ${value.runtimeType}"));
+    // map.forEach((key, value) => debugPrint(printSignifier +"$key -> $value AS ${value.runtimeType}"));
     return map;
   }
 
@@ -74,7 +74,7 @@ class Recipe extends Equatable {
     var querymeasuresList = querymeasures.toString().split('|');
     var queryingredientsList = queryingredients.toString().split('|');
 
-    // map.forEach((key, value) => debugPrint("$key -> $value AS ${value.runtimeType}"));
+    // map.forEach((key, value) => debugPrint(printSignifier +"$key -> $value AS ${value.runtimeType}"));
     return Recipe(id: queryid, name: queryname, origin: queryorigin, category: querycategory, instructions: queryinstruction, ingredients: queryingredientsList, thumbnail: querythumbnail, measures: querymeasuresList, authorization: false);
   }
 

@@ -3,5 +3,18 @@
         "helloWorld": "مرحبا بالعالم",
         "apptitle": "كتاب الوصفات",
         "hello": "اهلاً {username}",
-        "ingredients": "CHANGEIT"
+        "error": "خطأ",
+        "Recipe": "وصفة",
+        "origin":"أصل",
+        "category":"فئة",
+        "ingredients": "مواد خام",
+        "ent_valname": "أدخل اسمًا صالحًا",
+        "ent_valdesc": "الوصفة قصيرة جدًا",
+        "ent_recdesc": "اشرح كيفية صنعه",
+        "ent_recname": "اسم الطبق الخاص بك",
+        "chs_country":"اختر دولة",
+        "ent_country": "اكتب بلد المنشأ هنا",
+        "ent_Ingredient": "اكتب المكونات هنا",
+        "chs_category":"اختر فئة",
+        "chs_Ingredient": "اختر المواد الخام"
 }

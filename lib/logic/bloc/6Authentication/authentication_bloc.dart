@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/data/data_providers/local/sharepref_prov.dart';
 import 'package:test/data/repositories/supabase_repo.dart';
 import 'package:test/presentation/router/app_router.dart';
+import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';
 import 'package:toastification/toastification.dart';
 
@@ -16,24 +17,30 @@ part 'authentication_state.dart';
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final SupaRecipeRepository repo = SupaRecipeRepository();
 
-  AuthenticationBloc() : super(AuthenticationIdle()) {
+  AuthenticationBloc() : super(const AuthenticationState(username: "", userpass: "", history: [])) {
     on<InitAuthEvent>((event, emit) async {
-      print("Recalling User History  #Auth Bloc");
+      print(printSignifier + "Recalling User History  #Auth Bloc");
       var loginValue = await ShrPrefProvider().getStrList('LOGIN-KEY+VALUE') ?? [];
       // print("LOGIN VALUE: $loginValue");
       if (loginValue.isEmpty) {
-        emit(AuthenticationIdle());
+        emit(state.copyWith(newStatus: UserLoginStatus.INITIAL));
       } else {
-        emit(AuthenticationReady(loginValue));
+        emit(state.copyWith(newStatus: UserLoginStatus.READY, newHis: loginValue));
       }
     });
 
     on<LogoutAuthEvent>((event, emit) async {
-      print("User Logged out #Auth Bloc");
+      print(printSignifier + "User Logged out #Auth Bloc");
       await Future<void>.delayed(const Duration(seconds: 1));
       await repo.logout();
-      emit(AuthenticationLoggedOut());
+      emit(state.copyWith(newStatus: UserLoginStatus.LOGGEDOUT));
     });
+
+    // on<LogLoadAuthEvent>((event, emit) async {
+    //   print(printSignifier + "User Loading #Auth Bloc");
+    //   await Future<void>.delayed(const Duration(seconds: 1));
+    //   emit(state.copyWith(status: UserLoginStatus.IDLE));
+    // });
 
     on<LoginAuthEvent>((event, emit) async {
       await Future<void>.delayed(const Duration(seconds: 1));
@@ -44,9 +51,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
         if (!loginHistory.contains(newLoginValue)) {
           loginHistory.add(newLoginValue);
-          var isActiveLoginHistory = await ShrPrefProvider().setStrList('LOGIN-KEY+VALUE', loginHistory);
+          await ShrPrefProvider().setStrList('LOGIN-KEY+VALUE', loginHistory); // var isActiveLoginHistory =
         }
-
         toastification.show(
           context: loginscr_scafkey.currentState!.context,
           type: ToastificationType.success,
@@ -59,7 +65,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           borderRadius: BorderRadius.circular(100.0),
           boxShadow: highModeShadow,
         );
-
+        //FIXME -   print("STATE BEFORE LOGIN: ${state.copyWith(newStatus: UserLoginStatus.LOGGEDIN).history}");
+        emit(state.copyWith(newStatus: UserLoginStatus.LOGGEDIN));
         Navigator.of(loginscr_scafkey.currentState!.context).pushReplacementNamed(AppRouter.ROUTE_HOME);
       } else {
         //FIXME - Modify The Snackbar - Factorize it

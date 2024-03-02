@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/data/repositories/supabase_repo.dart';
 import 'package:test/presentation/router/app_router.dart';
+import 'package:test/utils/constants/policies.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -72,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //Assign Phone
             TextFormField(
               controller: controller_phone,
-              validator: (value) => (value == null || value.isEmpty || value.length < 13) ? "Enter A Valid Phone Number" : null,
+              validator: (value) => (value == null || value.isEmpty || value.length < 11) ? "Enter A Valid Phone Number" : null,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                   hintText: "Phone",
@@ -139,17 +140,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 8),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(text: "By signing up you accept our ", style: const TextStyle(color: Colors.grey), children: [
+              text: TextSpan(text: "By signing up you accept our \n", style: const TextStyle(color: Colors.grey), children: [
                 //FIXME - Navigate to Term and conditions page
-                const TextSpan(text: "Term and Conditions", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+                TextSpan(
+                  text: "Term and Conditions",
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      showModalBottomSheet(
+                        context: context,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                        ),
+                        builder: (context) => const SingleChildScrollView(child: Padding(padding: EdgeInsets.all(20.0), child: Text(termNpolicy))),
+                      );
+                    },
+                ),
+
                 const TextSpan(text: " and "),
                 TextSpan(
-                    text: "Private Policy",
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = ()
-                          //FIXME - Navigate to Private policy page
-                          {}),
+                  text: "Private Policy",
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      showModalBottomSheet(
+                        context: context,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                        ),
+                        builder: (context) => const Padding(padding: EdgeInsets.all(20.0), child: Text(termNpolicy)),
+                      );
+                    },
+                )
               ]),
             ),
             const SizedBox(height: 50),

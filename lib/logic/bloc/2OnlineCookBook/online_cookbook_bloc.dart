@@ -8,6 +8,7 @@ import 'package:test/data/models/recipe_model.dart';
 // ignore: unused_import
 import 'package:test/data/repositories/recipe_repo.dart';
 import 'package:test/data/repositories/supabase_repo.dart';
+import 'package:test/utils/constants/globals.dart';
 
 part 'online_cookbook_event.dart';
 part 'online_cookbook_state.dart';
@@ -28,7 +29,7 @@ class OnlineCookBookBloc extends Bloc<OnlineCookBookEvent, OnlineCookBookState> 
         final recipes = await repo.getAllRecipes();
         emit(OnlineCookBookLoaded(recipes, const []));
       } catch (e) {
-        debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+        debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
         rethrow;
       }
     });
@@ -39,7 +40,7 @@ class OnlineCookBookBloc extends Bloc<OnlineCookBookEvent, OnlineCookBookState> 
         final ingredients = await repo.getAllIngredients();
         emit(OnlineCookBookLoaded(const [], ingredients));
       } catch (e) {
-        debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+        debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
         rethrow;
       }
     });
@@ -50,7 +51,7 @@ class OnlineCookBookBloc extends Bloc<OnlineCookBookEvent, OnlineCookBookState> 
         await repo.addNewRecipe(event.recipe);
         emit(const OnlineCookBookLoaded([], []));
       } catch (e) {
-        debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+        debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
       }
     });
 
@@ -59,7 +60,7 @@ class OnlineCookBookBloc extends Bloc<OnlineCookBookEvent, OnlineCookBookState> 
     //   await emit.forEach(
     //     repo.getRecipeStream(),
     //     onData: (data) {
-    //       debugPrint("DATA: ${data.runtimeType}");
+    //       debugPrint(printSignifier +"DATA: ${data.runtimeType}");
     //       List<Recipe> foodList = [];
     //       for (var currentFood in data) {
     //         Recipe food = Recipe.fromSupaJSON(currentFood);
@@ -69,7 +70,7 @@ class OnlineCookBookBloc extends Bloc<OnlineCookBookEvent, OnlineCookBookState> 
     //       return OnlineCookBookLoaded(foodList);
     //     },
     //     onError: (error, stackTrace) {
-    //       debugPrint("++ ERROR: $error ++"); //TODO - Snackbar
+    //       debugPrint(printSignifier +"++ ERROR: $error ++"); //TODO - Snackbar
     //       return const OnlineCookBookLoading([]);
     //     },
     //   );

@@ -3,5 +3,18 @@
         "helloWorld": "Bonjour le monde",
         "apptitle": "Livre de recettes",
         "hello": "Bonjour {username}",
-        "ingredients": "CHANGEIT"
+        "error": "erreur",
+        "recipe": "Recette",
+        "origin": "Origine",
+        "category": "catégorie",
+        "ingredients": "Ingrédients",
+        "ent_valname": "Entrez un nom valide",
+        "ent_valdesc": "La recette est trop courte",
+        "ent_recdesc": "Expliquez comment le réaliser",
+        "ent_recname": "Nommez votre plat",
+        "chs_country":"Choisissez un pays",
+        "ent_country": "Tapez le pays d'origine ici",
+        "ent_Ingredient": "Tapez les ingrédients ici",
+        "chs_category":"Choisissez une catégorie",
+        "chs_Ingredient": "Choisissez les matières premières"
 }

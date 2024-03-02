@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:test/data/models/recipe_model.dart';
 import 'package:test/data/data_providers/local/sqflite_prov.dart';
+import 'package:test/utils/constants/globals.dart';
 
 part 'recipe_event.dart';
 part 'recipe_state.dart';
@@ -17,7 +18,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         var _recipes = await DatabaseProvider.db.getFoods();
         emit(RecipeLoaded(_recipes));
       } catch (e) {
-        debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+        debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
         rethrow;
       }
       DatabaseProvider.db.close();
@@ -31,7 +32,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+          debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
           rethrow;
         }
 
@@ -47,7 +48,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          debugPrint("++ ERROR: $e ++");
+          debugPrint(printSignifier + "++ ERROR: $e ++");
           rethrow;
         }
         DatabaseProvider.db.close();
@@ -62,7 +63,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           var _recipes = await DatabaseProvider.db.getFoods();
           emit(RecipeLoaded(_recipes));
         } catch (e) {
-          debugPrint("++ ERROR: $e ++");
+          debugPrint(printSignifier + "++ ERROR: $e ++");
           rethrow;
         }
         DatabaseProvider.db.close();

@@ -1,18 +1,24 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_typing_uninitialized_variables
 
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:test/data/models/category_model.dart';
+
+import 'package:test/utils/constants/globals.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/data/models/category_model.dart';
 import 'package:test/data/repositories/recipe_repo.dart';
 
 part 'online_showcase_state.dart';
 
 class OnlineShowcaseCubit extends Cubit<OnlineShowcaseState> {
-  OnlineShowcaseCubit() : super(OnlineShowcaseInitial([], []));
   final RecipeRepository repo = RecipeRepository();
+
+  OnlineShowcaseCubit() : super(OnlineShowcaseInitial([], []));
 
   void initialSetup() => emit(OnlineShowcaseInitial([], []));
 
@@ -35,7 +41,7 @@ class OnlineShowcaseCubit extends Cubit<OnlineShowcaseState> {
     } on ClientException catch (error) {
       debugPrint(error.message);
     } catch (e) {
-      debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+      debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
       rethrow;
     }
   }
@@ -47,7 +53,7 @@ class OnlineShowcaseCubit extends Cubit<OnlineShowcaseState> {
     } on ClientException catch (error) {
       debugPrint(error.message);
     } catch (e) {
-      debugPrint("++ ERROR: $e ++"); //TODO - Snackbar
+      debugPrint(printSignifier + "++ ERROR: $e ++"); //TODO - Snackbar
       rethrow;
     }
   }

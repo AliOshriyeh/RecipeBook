@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:test/data/data_providers/remote/supabase_API.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/data/models/Ingredient_model.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/utils/constants/globals.dart';
 
 class SupaRecipeRepository {
   final SupabaseAPI api = SupabaseAPI();
@@ -38,7 +38,7 @@ class SupaRecipeRepository {
   Future addNewRecipe(Recipe newItem) async {
     final recipes = await api.getAllRawRecipe(); //NOTE - Get All Recipes to check for a duplicate record
     if (recipes.any((element) => element.name != newItem.name)) {
-      print("A Record with same name already exists");
+      print(printSignifier + "A Record with same name already exists");
       //FIXME - Create a snackbar or toastification for it
     } else {
       final dynamic result = await api.addNewRawRecipe(newItem);
@@ -54,7 +54,7 @@ class SupaRecipeRepository {
       // final Session? session = result.session;
       final User? user = result.user;
       // if (user!.aud == "authenticated" && user.identities!.isNotEmpty) {
-      // debugPrint("${user!.identities}");
+      // debugPrint(printSignifier +"${user!.identities}");
       // }
       return user;
     } else {
@@ -67,15 +67,26 @@ class SupaRecipeRepository {
     final dynamic result = await api.userSignUpByEmail(email, pass, phone);
     if (result.runtimeType == AuthResponse) {
       final User? user = result.user;
-      // debugPrint("${user!.identities}");
+      // debugPrint(printSignifier +"${user!.identities}");
       return user;
     } else {
       return result.message;
     }
   }
 
+  bool sessionCheck() {
+    //FIXME - Use this status check to determine if user needs login and log out
+    print(printSignifier + "User Session Check #Supabase.Repo");
+    final result = api.userSession();
+    if (result == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Future logout() async {
-    print("User Logged out #Supabase.Repo");
+    print(printSignifier + "User Logged out #Supabase.Repo");
     final result = await api.userLogout();
     return result;
   }
@@ -86,7 +97,7 @@ class SupaRecipeRepository {
   //   if (result == const Stream.empty()) {
   //     return [Recipe.nullRecipe];
   //   } else {
-  //     debugPrint("object");
+  //     debugPrint(printSignifier +"object");
   //     return const Stream.empty();
   //     // List<Recipe> foodList = [];
   //     // for (var currentFood in result) {

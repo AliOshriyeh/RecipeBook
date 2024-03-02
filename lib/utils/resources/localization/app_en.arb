@@ -24,5 +24,19 @@
             }
         },
 
-        "ingredients": "ingredients"
+        "error": "Error",
+        "recipe": "Recipe",
+        "origin":"Origin",
+        "category":"Category",
+        "ingredients": "Ingredients",
+        "ent_recname": "Name your dish",
+        "ent_recdesc": "Explain how to make it!",
+        "ent_valdesc": "Recipe is too short",
+        "ent_valname": "Enter a valid name",
+        "ent_Ingredient": "Type the Ingredients here",
+        "ent_country": "Type the Country of Origin here",
+        "chs_country": "Choose a Country",
+        "chs_category": "Choose a Category",
+        "chs_Ingredient": "Choose ingredients",
+        "ent_valIngredient": "Enter a valid ingredients"
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/data/repositories/supabase_repo.dart';
+import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
 import 'package:test/presentation/router/app_router.dart';
 
 class HamburgerMenu extends StatelessWidget {
@@ -37,9 +39,9 @@ class HamburgerMenu extends StatelessWidget {
           ListTile(
             title: const Text('Log Out'),
             onTap: () {
-              final SupaRecipeRepository repo = SupaRecipeRepository();
+              AuthenticationBloc userAuthBloc = context.read<AuthenticationBloc>();
+              userAuthBloc.add(LogoutAuthEvent());
               Navigator.of(context).pushNamed(AppRouter.ROUTE_LOGIN);
-              repo.logout();
             },
           ),
         ],

@@ -23,6 +23,11 @@ class LoginAuthEvent extends AuthenticationEvent {
   List<Object> get props => [];
 }
 
+//Event Designed for User Log In/Out Load Screen
+class LogLoadAuthEvent extends AuthenticationEvent {
+  const LogLoadAuthEvent();
+}
+
 //Event Designed for User Logout
 class LogoutAuthEvent extends AuthenticationEvent {
   const LogoutAuthEvent();

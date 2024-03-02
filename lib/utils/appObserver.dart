@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyGlobalObserver extends BlocObserver {
@@ -12,6 +13,8 @@ class MyGlobalObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
+    // debugPrint('CUR STATE: ${transition.currentState.status}');
+    // debugPrint('NXT STATE: ${transition.nextState.status}');
     // debugPrint('${bloc.runtimeType} $transition');
   }
 

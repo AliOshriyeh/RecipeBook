@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/utils/constants/globals.dart';
 
 class DatabaseProvider {
   static const String TABLE_RECIPE = "Recipe";
@@ -38,7 +39,7 @@ class DatabaseProvider {
         await Directory(dirname(path)).create(recursive: true);
         return initExecute(path);
       } catch (e) {
-        debugPrint("++ ERROR: $e ++");
+        debugPrint(printSignifier + "++ ERROR: $e ++");
       }
       throw UnimplementedError();
     }
@@ -49,7 +50,7 @@ class DatabaseProvider {
       dbpath,
       version: 1,
       onCreate: (Database database, int version) async {
-        debugPrint("Creating Recipe table");
+        debugPrint(printSignifier + "Creating Recipe table");
         await database.execute(
           "CREATE TABLE $TABLE_RECIPE ("
           "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -68,10 +69,10 @@ class DatabaseProvider {
   }
 
   Future<List<Recipe>> getFoods() async {
-    debugPrint("Fetching Foods from Database...");
+    debugPrint(printSignifier + "Fetching Foods from Database...");
     final databaseActual = await db.database;
     var foods = await databaseActual.query(TABLE_RECIPE, columns: [COLUMN_ID, COLUMN_NAME, COLUMN_ORIGIN, COLUMN_CATEGORY, COLUMN_MEASURES, COLUMN_THUMBNAIL, COLUMN_INGREDIENTS, COLUMN_INSTRUCTION, COLUMN_AUTHORIZATION]);
-    // debugPrint("DB Log: $foods");
+    // debugPrint(printSignifier +"DB Log: $foods");
     List<Recipe> foodList = [];
     foods.forEach((currentFood) {
       Recipe food = Recipe.nullRecipe.fromMap(currentFood);
@@ -81,35 +82,35 @@ class DatabaseProvider {
   }
 
   Future<int> insert(Recipe entry) async {
-    debugPrint("Inserting Foods in Database...");
+    debugPrint(printSignifier + "Inserting Foods in Database...");
     final databaseActual = await db.database;
     var id = await databaseActual.insert(TABLE_RECIPE, entry.toMap()); //, conflictAlgorithm: ConflictAlgorithm.replace
-    debugPrint('Item #$id was Inserted in Database');
+    debugPrint(printSignifier + "Item #$id was Inserted in Database");
     return id;
   }
 
   Future<int> delete(Recipe entry) async {
-    debugPrint("Deleting Foods from Database...");
+    debugPrint(printSignifier + "Deleting Foods from Database...");
     final databaseActual = await db.database;
     var id = entry.id!;
 
     await databaseActual.delete(TABLE_RECIPE, where: "id = ?", whereArgs: [id]);
-    debugPrint('Item #$id was Deleted from Database');
+    debugPrint(printSignifier + "Item #$id was Deleted from Database");
     return id;
   }
 
   Future<int> update(Recipe entry) async {
-    debugPrint("Updating Foods in Database...");
+    debugPrint(printSignifier + "Updating Foods in Database...");
     final databaseActual = await db.database;
     var id = entry.id!;
 
     await databaseActual.update(TABLE_RECIPE, entry.toMap(), where: "id = ?", whereArgs: [id]);
-    debugPrint('Item #$id was Modified in Database');
+    debugPrint(printSignifier + "Item #$id was Modified in Database");
     return id;
   }
 
   void close() async {
-    debugPrint("Closing Recipe Database...");
+    debugPrint(printSignifier + "Closing Recipe Database...");
     //TODO - Should specify the database I want to close
     final databaseActual = await db.database;
     await databaseActual.close();
