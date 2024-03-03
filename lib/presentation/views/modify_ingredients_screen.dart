@@ -1,12 +1,16 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
 import 'package:test/data/models/recipe_model.dart';
 import 'package:test/logic/bloc/1Recipe/recipe_bloc.dart';
-import 'package:test/logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
 import 'package:test/presentation/router/app_router.dart';
-import 'package:toastification/toastification.dart';
+import 'package:test/logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
 
 class ModifyIngredientsScreen extends StatefulWidget {
   final Object? arguments;
@@ -59,7 +63,7 @@ class _ModifyIngredientsScreenState extends State<ModifyIngredientsScreen> {
                         children: [
                           Row(children: [const Text("Name: ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.name)]),
                           const SizedBox(height: 15),
-                          Row(children: [const Text("Category: ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.category)]),
+                          Row(children: [Text(AppLocalizations.of(context)!.category + ": ", style: const TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.category)]),
                           const SizedBox(height: 15),
                           Row(children: [const Text("Country: ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.origin)]),
                         ],

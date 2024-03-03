@@ -23,7 +23,17 @@
                 }
             }
         },
+       
+        "prmpt_search" : "There was no result for {itemName}",
+        "@prmpt_search": {
+            "placeholder": {
+                "itemName": {
+                    "type": "string"
+                }
+            }
+        },
 
+        "next": "Next",
         "error": "Error",
         "recipe": "Recipe",
         "origin":"Origin",
@@ -34,9 +44,9 @@
         "ent_valdesc": "Recipe is too short",
         "ent_valname": "Enter a valid name",
         "ent_Ingredient": "Type the Ingredients here",
+        "ent_valIngredient": "Enter a valid ingredients",
         "ent_country": "Type the Country of Origin here",
         "chs_country": "Choose a Country",
         "chs_category": "Choose a Category",
-        "chs_Ingredient": "Choose ingredients",
-        "ent_valIngredient": "Enter a valid ingredients"
+        "chs_Ingredient": "Choose ingredients"
 }

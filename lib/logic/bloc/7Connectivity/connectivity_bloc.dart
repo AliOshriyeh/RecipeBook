@@ -13,8 +13,12 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   final connectivityCheck = Connectivity();
   late StreamSubscription connectivityStreamSubscription;
   ConnectivityBloc() : super(ConnectivityLoading()) {
+    on<ConnectivityInitialEvent>((event, emit) {
+      print(printSignifier + "START");
+      emit(ConnectionFailure());
+    });
+
     on<ConnectivityMonitorEvent>((event, emit) {
-      print("START");
       connectivityStreamSubscription = connectivityCheck.onConnectivityChanged.listen((connectivityResult) {
         //   if (connectivityResult == ConnectivityResult.wifi) {
         //     setStateToConnected(ConnectivityType.WIFI);

@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         supportedLocales: LocalizationManager.allLang,
-        locale: const Locale('fa'),
+        locale: const Locale('en'),
         title: "The Recipe Book",
         theme: lightTheme,
         themeMode: ThemeMode.light,

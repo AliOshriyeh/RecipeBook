@@ -2,16 +2,17 @@
 
 import 'dart:io';
 
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
 import 'package:test/data/models/recipe_model.dart';
+import 'package:test/utils/constants/constLists.dart';
+import 'package:test/presentation/router/app_router.dart';
 import 'package:test/logic/cubit/3ModifyIngredient/modify_ingredient_cubit.dart';
 import 'package:test/logic/cubit/5ModifyRecipeImage/modify_ingredient_image_cubit.dart';
-import 'package:test/presentation/router/app_router.dart';
-
-import 'package:test/utils/constants/constLists.dart';
 
 class EditRecipeScreen extends StatefulWidget {
   final Object? arguments;
@@ -50,7 +51,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
     recipeImageCubit.loadImagePath(thisRecipe.thumbnail); //Recalling Recipe's Image
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text(controller_name.text + " Recipe")),
+      appBar: AppBar(title: Text(controller_name.text)),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -84,9 +85,9 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                 //Assign Name
                 TextFormField(
                   controller: controller_name,
-                  validator: (value) => (value == null || value.length < 4) ? "Enter A Valid Name" : null,
+                  validator: (value) => (value == null || value.length < 4) ? AppLocalizations.of(context)!.ent_valname : null,
                   decoration: InputDecoration(
-                      hintText: "Name Your Dish :)",
+                      hintText: AppLocalizations.of(context)!.ent_recname,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                       focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(10.0)),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(10.0))),
@@ -96,7 +97,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                 DropdownSearch<String>(
                   items: categoryEntries,
                   selectedItem: controller_category.text,
-                  validator: (value) => (value == null || value.isEmpty) ? "Choose a Category" : null,
+                  validator: (value) => (value == null || value.isEmpty) ? AppLocalizations.of(context)!.chs_category : null,
                   onChanged: (selectedCategory) => controller_category.text = selectedCategory ?? "",
                   autoValidateMode: AutovalidateMode.onUserInteraction,
                   popupProps: PopupProps.modalBottomSheet(
@@ -108,7 +109,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                       ))),
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
-                      labelText: "Category",
+                      labelText: AppLocalizations.of(context)!.category,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0)),
                     ),
@@ -119,20 +120,20 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                 DropdownSearch<String>(
                   items: countryList,
                   selectedItem: controller_country.text,
-                  validator: (value) => (value == null || value.isEmpty) ? "Choose a Country" : null,
+                  validator: (value) => (value == null || value.isEmpty) ? AppLocalizations.of(context)!.chs_country : null,
                   onChanged: (selectedCountry) => controller_country.text = selectedCountry ?? "",
                   autoValidateMode: AutovalidateMode.onUserInteraction,
                   popupProps: PopupProps.modalBottomSheet(
                       showSearchBox: true,
                       loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                      emptyBuilder: (context, searchEntry) => Center(child: Text("There was no result for $searchEntry")),
+                      emptyBuilder: (context, searchEntry) => Center(child: Text(AppLocalizations.of(context)!.prmpt_search(searchEntry))),
                       //FIXME - Create a better error message
                       errorBuilder: (context, searchEntry, exception) => const Center(child: Icon(Icons.error_rounded, color: Colors.grey, size: 200)),
                       searchFieldProps: TextFieldProps(
                         controller: controller_country,
                         decoration: InputDecoration(
                             suffixIcon: IconButton(onPressed: () => controller_country.clear(), icon: const Icon(Icons.clear_rounded)),
-                            hintText: "Type the Country of Origin here",
+                            hintText: AppLocalizations.of(context)!.ent_country,
                             focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
                       ),
@@ -143,7 +144,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                       ))),
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
-                        labelText: "Country",
+                        labelText: AppLocalizations.of(context)!.origin,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), //Because when DropdownMenu is clicked, "Origin" shows ⁡⁢⁣⁢unacceptable⁡ behaviour
                         // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0))),
@@ -168,14 +169,14 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                   popupProps: PopupPropsMultiSelection.modalBottomSheet(
                       showSearchBox: true,
                       loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                      emptyBuilder: (context, searchEntry) => Center(child: Text("There was no result for $searchEntry")),
+                      emptyBuilder: (context, searchEntry) => Center(child: Text(AppLocalizations.of(context)!.prmpt_search(searchEntry))),
                       //FIXME - Create a better error message
                       errorBuilder: (context, searchEntry, exception) => const Center(child: Icon(Icons.error_rounded, color: Colors.grey, size: 200)),
                       searchFieldProps: TextFieldProps(
                         controller: controller_ingredient,
                         decoration: InputDecoration(
                             suffixIcon: IconButton(onPressed: () => controller_ingredient.clear(), icon: const Icon(Icons.clear_rounded)),
-                            hintText: "Search for Ingredients here",
+                            hintText: AppLocalizations.of(context)!.ent_Ingredient,
                             focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
                       ),
@@ -186,8 +187,8 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                       ))),
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
-                        labelText: "Ingredients",
-                        hintText: "Add Ingredients",
+                        labelText: AppLocalizations.of(context)!.ingredients,
+                        hintText: AppLocalizations.of(context)!.ent_valIngredient,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), //Because when DropdownMenu is clicked, "Origin" shows ⁡⁢⁣⁢unacceptable⁡ behaviour
                         // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0))),
@@ -202,9 +203,9 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                   maxLength: 300,
                   controller: controller_content,
                   keyboardType: TextInputType.multiline,
-                  validator: (value) => (value == null || value.length < 20) ? "Recipe is TOO Short!!" : null,
+                  validator: (value) => (value == null || value.length < 20) ? AppLocalizations.of(context)!.ent_valdesc : null,
                   decoration: InputDecoration(
-                      hintText: "Explain How To Make it!",
+                      hintText: AppLocalizations.of(context)!.ent_recdesc,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                       focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(10.0)),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(10.0))),
@@ -251,7 +252,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                 }
               },
               icon: const Icon(Icons.navigate_next_rounded, color: Colors.white, size: 25),
-              label: const Text("Next", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+              label: Text(AppLocalizations.of(context)!.next, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
         )
       ],
     );

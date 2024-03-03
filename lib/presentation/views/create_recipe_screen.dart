@@ -35,7 +35,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text(controller_name.text + " " + AppLocalizations.of(context)!.recipe)),
+      appBar: AppBar(title: Text(controller_name.text)),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -109,7 +109,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   popupProps: PopupProps.modalBottomSheet(
                       showSearchBox: true,
                       loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                      emptyBuilder: (context, searchEntry) => Center(child: Text("There was no result for $searchEntry")),
+                      emptyBuilder: (context, searchEntry) => Center(child: Text(AppLocalizations.of(context)!.prmpt_search(searchEntry))),
                       //FIXME - Create a better error message
                       errorBuilder: (context, searchEntry, exception) => const Center(child: Icon(Icons.error_rounded, color: Colors.grey, size: 200)),
                       searchFieldProps: TextFieldProps(
@@ -152,7 +152,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   popupProps: PopupPropsMultiSelection.modalBottomSheet(
                       showSearchBox: true,
                       loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                      emptyBuilder: (context, searchEntry) => Center(child: Text("There was no result for $searchEntry")),
+                      emptyBuilder: (context, searchEntry) => Center(child: Text(AppLocalizations.of(context)!.prmpt_search(searchEntry))),
                       //FIXME - Create a better error message
                       errorBuilder: (context, searchEntry, exception) => const Center(child: Icon(Icons.error_rounded, color: Colors.grey, size: 200)),
                       searchFieldProps: TextFieldProps(
@@ -233,7 +233,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                 }
               },
               icon: const Icon(Icons.navigate_next_rounded, color: Colors.white, size: 25),
-              label: const Text("Next", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+              label: Text(AppLocalizations.of(context)!.next, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
         )
       ],
     );
