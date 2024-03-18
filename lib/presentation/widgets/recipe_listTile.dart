@@ -61,7 +61,7 @@ class RecipeListTile extends Equatable {
           ),
           // recipeItem.isVegan ? const Icon(Icons.emoji_emotions_rounded, size: 30, color: Colors.green): const Icon(Icons.outlet_rounded, size: 30, color: Colors.red)
           childrenPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-          subtitle: Text("Category: ${recipeItem.category}", style: const TextStyle(fontSize: 16, color: Colors.grey)),
+          subtitle: Text(AppLocalizations.of(parentContext)!.category + ": ${recipeItem.category}", style: const TextStyle(fontSize: 16, color: Colors.grey)),
           children: [
             SelectableText(recipeItem.instructions, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),

@@ -66,7 +66,7 @@ class _OnlineRecipeScreenState extends State<OnlineRecipeScreen> {
                 });
           } else {
             // In Case The App Reads from Outside of Standard States
-            return const Text("Something Went Wrong!");
+            return Text(AppLocalizations.of(context)!.prmpt_error);
           }
         }),
       ),

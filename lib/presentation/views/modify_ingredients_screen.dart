@@ -29,7 +29,7 @@ class _ModifyIngredientsScreenState extends State<ModifyIngredientsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("${thisRecipe.name} Recipe")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.ttle_recname(thisRecipe.name))),
       body: SingleChildScrollView(
           child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -61,11 +61,11 @@ class _ModifyIngredientsScreenState extends State<ModifyIngredientsScreen> {
                     children: [
                       Column(
                         children: [
-                          Row(children: [const Text("Name: ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.name)]),
+                          Row(children: [Text(AppLocalizations.of(context)!.name + ": ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.name)]),
                           const SizedBox(height: 15),
                           Row(children: [Text(AppLocalizations.of(context)!.category + ": ", style: const TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.category)]),
                           const SizedBox(height: 15),
-                          Row(children: [const Text("Country: ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.origin)]),
+                          Row(children: [Text(AppLocalizations.of(context)!.country + ": ", style: TextStyle(fontWeight: FontWeight.bold)), Text(thisRecipe.origin)]),
                         ],
                       ),
                     ],
@@ -185,7 +185,7 @@ class _ModifyIngredientsScreenState extends State<ModifyIngredientsScreen> {
                   Navigator.of(context).popAndPushNamed(AppRouter.ROUTE_LOCAL);
                 },
                 icon: const Icon(Icons.check_rounded, color: Colors.white, size: 25),
-                label: Text(submitFnc == 'CREATE' ? "Create" : "Submit", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))))
+                label: Text(submitFnc == 'CREATE' ? AppLocalizations.of(context)!.create : AppLocalizations.of(context)!.submit, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))))
       ],
     );
   }

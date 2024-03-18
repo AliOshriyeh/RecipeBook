@@ -4,9 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:test/data/repositories/supabase_repo.dart';
-import 'package:test/presentation/router/app_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
 import 'package:test/utils/constants/policies.dart';
+import 'package:test/presentation/router/app_router.dart';
+import 'package:test/data/repositories/supabase_repo.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -30,8 +32,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: const EdgeInsets.all(8.0),
         child: RichText(
           textAlign: TextAlign.center,
-          text: TextSpan(text: "Already Have an Account? ", style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)), children: [
-            TextSpan(text: "Login Now!", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_LOGIN)),
+          text: TextSpan(text: AppLocalizations.of(context)!.prmpt_hasaccount, style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)), children: [
+            TextSpan(text: AppLocalizations.of(context)!.prmpt_login, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue), recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_LOGIN)),
           ]),
         ),
       ),
@@ -43,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 50),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("Sign Up",
+              child: Text(AppLocalizations.of(context)!.signup,
                   style: GoogleFonts.mPlusRounded1c(
                     textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   )),
@@ -51,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text("Let's get started by filling out the form below.",
+              child: Text(AppLocalizations.of(context)!.txt_fillform,
                   style: GoogleFonts.ephesis(
                     textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.grey),
                   )),
@@ -60,10 +62,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //Assign Email
             TextFormField(
               controller: controller_email,
-              validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? "Enter A Valid Email" : null,
+              validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? AppLocalizations.of(context)!.val_email : null,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: "Email",
+                  hintText: AppLocalizations.of(context)!.email,
                   hintStyle: GoogleFonts.mPlusRounded1c(),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                   focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
@@ -73,10 +75,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //Assign Phone
             TextFormField(
               controller: controller_phone,
-              validator: (value) => (value == null || value.isEmpty || value.length < 11) ? "Enter A Valid Phone Number" : null,
+              validator: (value) => (value == null || value.isEmpty || value.length < 11) ? AppLocalizations.of(context)!.val_phone : null,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: "Phone",
+                  hintText: AppLocalizations.of(context)!.phone,
                   hintStyle: GoogleFonts.mPlusRounded1c(),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                   focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
@@ -88,9 +90,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               obscureText: passVisiblity,
               controller: controller_pass,
               keyboardType: TextInputType.visiblePassword,
-              validator: (value) => (value == null || value.length < 8) ? "Password is TOO Short!!" : null,
+              validator: (value) => (value == null || value.length < 8) ? AppLocalizations.of(context)!.val_pass : null,
               decoration: InputDecoration(
-                  hintText: "Password",
+                  hintText: AppLocalizations.of(context)!.pass,
                   hintStyle: GoogleFonts.mPlusRounded1c(),
                   suffixIcon: IconButton(
                     onPressed: () => passVisiblity = !passVisiblity,
@@ -135,15 +137,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
               ),
-              child: const Text("Sign Up", style: TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.signup, style: TextStyle(color: Colors.white)),
             ),
             const SizedBox(height: 8),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(text: "By signing up you accept our \n", style: const TextStyle(color: Colors.grey), children: [
+              text: TextSpan(text: AppLocalizations.of(context)!.txt_accept + '\n', style: const TextStyle(color: Colors.grey), children: [
                 //FIXME - Navigate to Term and conditions page
                 TextSpan(
-                  text: "Term and Conditions",
+                  text: AppLocalizations.of(context)!.txt_term,
                   style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -160,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 const TextSpan(text: " and "),
                 TextSpan(
-                  text: "Private Policy",
+                  text: AppLocalizations.of(context)!.txt_policy,
                   style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {

@@ -40,7 +40,7 @@ class _LocalRecipeScreenState extends State<LocalRecipeScreen> {
           }
           if (recipeState is RecipeLoaded) {
             return recipeState.recipes.isEmpty
-                ? const Center(child: Text("No Recipes Registered Yet!"))
+                ? Center(child: Text(AppLocalizations.of(context)!.prmpt_norec))
                 : ListView.builder(
                     itemCount: recipeState.recipes.length,
                     itemBuilder: (context, index) {
@@ -48,7 +48,7 @@ class _LocalRecipeScreenState extends State<LocalRecipeScreen> {
                     });
           } else {
             // In Case The App Reads from Outside of Standard States
-            return const Text("Something Went Wrong!");
+            return Text(AppLocalizations.of(context)!.prmpt_error);
           }
         }),
       ),

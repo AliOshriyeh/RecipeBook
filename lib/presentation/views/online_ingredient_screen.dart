@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,12 +34,12 @@ class _OnlineIngredientScreenState extends State<OnlineIngredientScreen> {
         child: BlocBuilder<OnlineCookBookBloc, OnlineCookBookState>(builder: (context, state) {
           if (state is OnlineCookBookIdle || (state is OnlineCookBookLoaded && state.ingredients.isEmpty)) {
             // In Case The App Reads from Outside of Standard States
-            return const Column(
+            return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("No Ingredient Registered Yet.\nAdd your First Ingredient Today.", textAlign: TextAlign.center),
-                SizedBox(height: 20),
-                SpinkitCustomLoading(typeNum: 5),
+                Text(AppLocalizations.of(context)!.prmpt_noingredient + '\n' + AppLocalizations.of(context)!.prmpt_frstIngredient, textAlign: TextAlign.center),
+                const SizedBox(height: 20),
+                const SpinkitCustomLoading(typeNum: 5),
               ],
             );
           } else if (state is OnlineCookBookLoaded && state.ingredients.isNotEmpty) {
@@ -50,7 +50,7 @@ class _OnlineIngredientScreenState extends State<OnlineIngredientScreen> {
                 });
           } else {
             // In Case The App Reads from Outside of Standard States
-            return const Text("Something Went Wrong!");
+            return Text(AppLocalizations.of(context)!.prmpt_error);
           }
         }),
       ),

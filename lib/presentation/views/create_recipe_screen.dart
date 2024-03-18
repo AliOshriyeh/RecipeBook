@@ -70,7 +70,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                 //Assign Name
                 TextFormField(
                   controller: controller_name,
-                  validator: (value) => (value == null || value.length < 4) ? AppLocalizations.of(context)!.ent_valname : null,
+                  validator: (value) => (value == null || value.length < 4) ? AppLocalizations.of(context)!.val_recname : null,
                   decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.ent_recname,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
@@ -143,7 +143,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                     query.forEach((element) => result.add(element["ingName"]));
                     return result;
                   },
-                  validator: (value) => (value == null || value.isEmpty) ? AppLocalizations.of(context)!.chs_Ingredient : null,
+                  validator: (value) => (value == null || value.isEmpty) ? AppLocalizations.of(context)!.chs_ingredients : null,
                   onChanged: (selectedIngredientsList) {
                     ModifyIngredientCubit ingredientCubit = context.read<ModifyIngredientCubit>();
                     List<int> selectedMeasuresList = List.filled(selectedIngredientsList.length, 1);
@@ -159,7 +159,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                         controller: controller_ingredient,
                         decoration: InputDecoration(
                             suffixIcon: IconButton(onPressed: () => controller_ingredient.clear(), icon: const Icon(Icons.clear_rounded)),
-                            hintText: AppLocalizations.of(context)!.ent_Ingredient,
+                            hintText: AppLocalizations.of(context)!.ent_recingredients,
                             focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
                       ),
@@ -171,7 +171,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                         labelText: AppLocalizations.of(context)!.ingredients,
-                        hintText: AppLocalizations.of(context)!.ent_valIngredient,
+                        hintText: AppLocalizations.of(context)!.val_recingredients,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), //Because when DropdownMenu is clicked, "Origin" shows ⁡⁢⁣⁢unacceptable⁡ behaviour
                         // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0))),
@@ -185,7 +185,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   maxLength: 300,
                   controller: controller_content,
                   keyboardType: TextInputType.multiline,
-                  validator: (value) => (value == null || value.length < 20) ? AppLocalizations.of(context)!.ent_valdesc : null,
+                  validator: (value) => (value == null || value.length < 20) ? AppLocalizations.of(context)!.val_recdesc : null,
                   decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.ent_recdesc,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
+import 'package:test/data/models/recipe_model.dart';
 import 'package:test/data/models/Ingredient_model.dart';
 import 'package:test/logic/bloc/2OnlineCookBook/online_cookbook_bloc.dart';
-import 'package:toastification/toastification.dart';
-import 'package:test/data/models/recipe_model.dart';
 
 class UploadRecipeDialog extends StatelessWidget {
   final Recipe calledRecipe;
@@ -17,7 +19,7 @@ class UploadRecipeDialog extends StatelessWidget {
       icon: Align(alignment: Alignment.topRight, child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close_rounded, color: Colors.red))),
       title: Icon(Icons.cloud_upload_rounded, color: Colors.grey[400], size: 200),
       actionsAlignment: MainAxisAlignment.center,
-      content: const Text("Are You Sure You Want To Upload This Recipe?", textAlign: TextAlign.center),
+      content: Text(AppLocalizations.of(context)!.prmpt_recupload, textAlign: TextAlign.center),
       insetPadding: const EdgeInsets.symmetric(horizontal: 30),
       actions: [
         TextButton.icon(
@@ -39,12 +41,12 @@ class UploadRecipeDialog extends StatelessWidget {
               Navigator.pop(context);
             },
             icon: const Icon(Icons.check, color: Colors.white, size: 20),
-            label: const Text("Upload", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+            label: Text(AppLocalizations.of(context)!.upload, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
         TextButton.icon(
             style: TextButton.styleFrom(elevation: 5, backgroundColor: Colors.white, side: const BorderSide(width: 1, color: Colors.grey), padding: const EdgeInsets.symmetric(horizontal: 12)),
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.cancel, color: Colors.grey, size: 20),
-            label: const Text("Abort", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey))),
+            label: Text(AppLocalizations.of(context)!.abort, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey))),
       ],
     );
   }

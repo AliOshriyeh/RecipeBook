@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
         drawer: const HamburgerMenu(),
         body: Column(
           children: [
-            Flexible(flex: 1, child: Container(color: Colors.deepOrange.shade300, height: MediaQuery.of(context).size.height * 0.05, child: const Center(child: Text("Enjoy A Delicious Trip", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))))),
+            Flexible(flex: 1, child: Container(color: Colors.deepOrange.shade300, height: MediaQuery.of(context).size.height * 0.05, child: Center(child: Text(AppLocalizations.of(context)!.ttle_carousel, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))))),
             const SizedBox(height: 10),
             Expanded(
               flex: 5,
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator(color: Colors.red));
                   } else if (state is OnlineShowcaseLoaded) {
                     return state.randomList.isEmpty
-                        ? const Center(child: Text("No Recipes Registered Yet!"))
+                        ? Center(child: Text(AppLocalizations.of(context)!.prmpt_nopage))
                         : CarouselSlider(
                             options: CarouselOptions(
                               autoPlay: true,
@@ -89,13 +89,13 @@ class HomeScreen extends StatelessWidget {
                           );
                   } else {
                     // In Case The App Reads from Outside of Standard States
-                    return const Text("Something Went Wrong!");
+                    return Text(AppLocalizations.of(context)!.prmpt_error);
                   }
                 }),
               ),
             ),
             const SizedBox(height: 10),
-            Flexible(flex: 1, child: Container(color: Colors.deepOrange.shade300, height: MediaQuery.of(context).size.height * 0.05, child: const Center(child: Text("Choose Your Category", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))))),
+            Flexible(flex: 1, child: Container(color: Colors.deepOrange.shade300, height: MediaQuery.of(context).size.height * 0.05, child: Center(child: Text(AppLocalizations.of(context)!.chs_category, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white))))),
             Expanded(
               flex: 8,
               child: Container(
@@ -110,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8),
                       child: state.categoryList.first.id == -1
-                          ? const Center(child: Text("No Category has been Assigned!"))
+                          ? Center(child: Text(AppLocalizations.of(context)!.prmpt_nocategory))
                           : GridView.builder(
                               itemCount: state.categoryList.length,
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10),
@@ -150,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                     );
                   } else {
                     // In Case The App Reads from Outside of Standard States
-                    return const Text("Something Went Wrong!");
+                    return Text(AppLocalizations.of(context)!.prmpt_error);
                   }
                 }),
               ),

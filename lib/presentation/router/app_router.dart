@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:test/presentation/views/home_screen.dart';
 import 'package:test/presentation/views/login_screen.dart';
 import 'package:test/presentation/views/signup_screen.dart';
@@ -66,8 +67,8 @@ class AppRouter {
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (context) {
       return Scaffold(
-        appBar: AppBar(title: const Text("Error"), centerTitle: true),
-        body: const Center(child: Text("Page not Found")),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.error), centerTitle: true),
+        body: Center(child: Text(AppLocalizations.of(context)!.prmpt_nopage)),
       );
     });
   }

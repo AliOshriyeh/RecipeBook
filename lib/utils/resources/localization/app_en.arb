@@ -1,52 +1,112 @@
 {
-        "language": "English",
-        "@language": {
-            "description": "The current language"
-        },
-
-        "helloWorld": "HelloWorld",
-        "@helloWorld": {
-            "description": "A programmer's first task"
-        },
-
-        "apptitle": "Recipe Book",
-        "@multilanguage": {
-            "description": "App's title"
-        },
-
-        "hello": "Hello {username}",
-        "@hello": {
-            "description": "A welcome message",
-            "placeholder": {
-                "username": {
-                    "type": "string"
-                }
+    "language": "English",
+    "@language": {
+        "description": "The current language"
+    },
+    "apptitle": "Recipe Book",
+    "@multilanguage": {
+        "description": "App's title"
+    },
+    "hello": "Hello {username}",
+    "@hello": {
+        "description": "A welcome message",
+        "placeholder": {
+            "username": {
+                "type": "string"
             }
-        },
-       
-        "prmpt_search" : "There was no result for {itemName}",
-        "@prmpt_search": {
-            "placeholder": {
-                "itemName": {
-                    "type": "string"
-                }
+        }
+    },
+    "prmpt_search": "There was no result for {itemName}",
+    "@prmpt_search": {
+        "placeholder": {
+            "itemName": {
+                "type": "string"
             }
-        },
-
-        "next": "Next",
-        "error": "Error",
-        "recipe": "Recipe",
-        "origin":"Origin",
-        "category":"Category",
-        "ingredients": "Ingredients",
-        "ent_recname": "Name your dish",
-        "ent_recdesc": "Explain how to make it!",
-        "ent_valdesc": "Recipe is too short",
-        "ent_valname": "Enter a valid name",
-        "ent_Ingredient": "Type the Ingredients here",
-        "ent_valIngredient": "Enter a valid ingredients",
-        "ent_country": "Type the Country of Origin here",
-        "chs_country": "Choose a Country",
-        "chs_category": "Choose a Category",
-        "chs_Ingredient": "Choose ingredients"
+        }
+    },
+    "prmpt_login": "Login Now!",
+    "prmpt_signup": "Sign Up Now!",
+    "prmpt_nopage": "No Page Found",
+    "prmpt_frgtpass": "Forgot Password?",
+    "prmpt_error": "Something Went Wrong!",
+    "prmpt_norec": "No Recipes Registered Yet!",
+    "prmpt_hasaccount": "Already Have an Account?",
+    "prmpt_nocategory": "No Category has been Assigned",
+    "prmpt_noaccount": "You Don't Have an Account Yet?",
+    "prmpt_noingredient": "No Ingredient Registered Yet",
+    "prmpt_frstIngredient": "Add your First Ingredient Today",
+    "prmpt_recdelete": "Are You Sure You Want To Delete This Recipe?",
+    "prmpt_recupload": "Are You Sure You Want To Upload This Recipe?",
+    "ttle_recname": "{itemName}'s Recipe",
+    "@ttle_recname": {
+        "placeholder": {
+            "itemName": {
+                "type": "string"
+            }
+        }
+    },
+    "ttle_carousel": "Enjoy A Delicious Trip",
+    "chs_country": "Choose a Country",
+    "chs_category": "Choose a Category",
+    "chs_ingredients": "Choose ingredients",
+    "ent_recname": "Name your dish",
+    "ent_recdesc": "Explain how to make it!",
+    "ent_country": "Type the Country of Origin here",
+    "ent_recingredients": "Type the Ingredients here",
+    "txt_facts": "Nutrition Facts",
+    "txt_policy": "Private Policy",
+    "txt_term": "Term and Conditions",
+    "txt_accept": "By signing up you accept our",
+    "txt_fillform": "Let's get started by filling out the form below",
+    "val_email": "Enter A Valid Email",
+    "val_recname": "Enter a valid name",
+    "val_recdesc": "Recipe is too short",
+    "val_pass": "Password is TOO Short!!",
+    "val_phone": "Enter A Valid Phone Number",
+    "val_recingredients": "Enter a valid ingredients",
+    "next": "Next",
+    "name": "Name",
+    "error": "Error",
+    "login": "Login",
+    "email": "Email",
+    "phone": "Phone",
+    "abort": "Abort",
+    "pass": "Password",
+    "recipe": "Recipe",
+    "upload": "Upload",
+    "amount": "Amount",
+    "origin": "Origin",
+    "delete": "Delete",
+    "create": "Create",
+    "submit": "Submit",
+    "signup": "Sign Up",
+    "country": "Country",
+    "settings": "Settings",
+    "category": "Category",
+    "calories": "Calories",
+    "ingredients": "Ingredients",
+    "fact_totalfat": "Total Fat",
+    "fact_satfat": "Saturated Fat",
+    "fact_transfat": "Trans Fat",
+    "fact_cholesterol": "Cholesterol",
+    "fact_totalcarb": "Total Carbohydrate",
+    "fact_fiber": "Dietary Fiber",
+    "fact_sugar": "Granulated Sugar",
+    "fact_protein": "Protein",
+    "fact_vitamin": "Vitamin",
+    "fact_calcium": "Calcium",
+    "fact_chloride": "Chloride",
+    "fact_chromium": "Chromium",
+    "fact_copper": "Copper",
+    "fact_fluoride": "Fluoride",
+    "fact_iodine": "Iodine",
+    "fact_iron": "Iron",
+    "fact_magnesium": "Magnesium",
+    "fact_manganese": "Manganese",
+    "fact_molybdenum": "Molybdenum",
+    "fact_phosphorus": "Phosphorus",
+    "fact_potassium": "Potassium",
+    "fact_selenium": "Selenium",
+    "fact_sodium": "Sodium",
+    "fact_zink": "Zink"
 }

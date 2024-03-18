@@ -1,13 +1,15 @@
 // ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
 import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/presentation/router/app_router.dart';
+import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,9 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(8.0),
         child: RichText(
           textAlign: TextAlign.center,
-          text: TextSpan(text: "You Don't Have an Account Yet? ", style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)), children: [
+          text: TextSpan(text: AppLocalizations.of(context)!.prmpt_noaccount, style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)), children: [
             TextSpan(
-              text: "Sign Up Now!",
+              text: AppLocalizations.of(context)!.prmpt_signup,
               style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
               recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_SIGNUP),
             ),
@@ -67,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 50),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Login",
+                        child: Text(AppLocalizations.of(context)!.login,
                             style: GoogleFonts.mPlusRounded1c(
                               textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                             )),
@@ -76,12 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       //Assign Email
                       TextFormField(
                         controller: controller_email,
-                        validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? "Enter A Valid Email" : null,
+                        validator: (value) => (value == null || value.isEmpty || !value.contains('.com')) ? AppLocalizations.of(context)!.val_email : null,
                         enableInteractiveSelection: true,
                         selectionControls: MaterialTextSelectionControls(),
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                            hintText: "Email",
+                            hintText: AppLocalizations.of(context)!.email,
                             hintStyle: GoogleFonts.mPlusRounded1c(),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                             focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
@@ -93,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: passVisiblity,
                         controller: controller_pass,
                         keyboardType: TextInputType.visiblePassword,
-                        validator: (value) => (value == null || value.length < 8) ? "Password is TOO Short!!" : null,
+                        validator: (value) => (value == null || value.length < 8) ? AppLocalizations.of(context)!.val_pass : null,
                         decoration: InputDecoration(
-                            hintText: "Password",
+                            hintText: AppLocalizations.of(context)!.pass,
                             hintStyle: GoogleFonts.mPlusRounded1c(),
                             suffixIcon: controller_pass.text.length > 0
                                 ? IconButton(
@@ -129,10 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: MaterialStatePropertyAll(Theme.of(context).buttonTheme.colorScheme!.primary),
                           shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                         ),
-                        child: const Text("Login", style: TextStyle(color: Colors.white)),
+                        child: Text(AppLocalizations.of(context)!.login, style: TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(height: 8),
-                      Text("Forgot Password?", style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))),
+                      Text(AppLocalizations.of(context)!.prmpt_frgtpass, style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))),
                     ]),
                   ),
                 );
