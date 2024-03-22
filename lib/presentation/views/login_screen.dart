@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+import 'package:test/presentation/themes/light_theme.dart';
 
 import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/logic/bloc/7Connectivity/connectivity_bloc.dart';
 import 'package:test/utils/resources/localizator.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         supportedLocales: LocalizationManager.allLang,
-        locale: const Locale('en'),
+        locale: LocalizationManager.allLang[2], //const Locale('fa'),
         title: "The Recipe Book",
         theme: lightTheme,
         themeMode: ThemeMode.light,
@@ -73,6 +74,27 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// void _saveLocale() async {
+//   var prefs = await SharedPreferences.getInstance();
+
+//   String languageCode = prefs.setString('AppInfo_DefaultLocale', 'fa');
+//   // String countryCode = prefs.getString('countryCode') ?? 'ps';
+
+//   return Locale(languageCode, countryCode);
+// }
+
+// Future<Locale> _fetchLocale() async {
+//   var prefs = await SharedPreferences.getInstance();
+
+//   String languageCode = prefs.getString('AppInfo_DefaultLocale') ?? 'ar';
+//   // String countryCode = prefs.getString('countryCode') ?? 'ps';
+
+//   return Locale(languageCode); //countryCode
+// }
+
+
+
 
 //FIXME - Log out user from supabase when app is closed or paused
 // @override

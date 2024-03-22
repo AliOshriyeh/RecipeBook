@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
+// Locale deviceLang = PlatformDispatcher.instance.locale;
+// String deviceLang = Platform.localeName.substring(0, 2);
+// bool right2left = (deviceLang == const Locale('fa') || deviceLang == const Locale('ar')) ? true : false;
 
 ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
+    // fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah',
     //FIXME - Make a theme that applies to all inputdecorations. main focus here is different borders!
     // inputDecorationTheme: InputDecorationTheme(
     //     contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
@@ -43,3 +47,9 @@ ThemeData lightTheme = ThemeData(
         borderRadius: BorderRadius.circular(20),
       ),
     ));
+
+// ThemeData copyWith({required ThemeData currentTheme, required String fontFamily}) {
+// ThemeData copiedTheme = currentTheme;
+// copiedTheme.fontFamily
+//   return currentTheme.;
+// }
