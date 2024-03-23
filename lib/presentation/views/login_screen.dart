@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:test/presentation/themes/light_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/presentation/router/app_router.dart';
+import 'package:test/utils/resources/locale_provider.dart';
 import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print(LocaleProvider().locale);
     return Scaffold(
       key: loginscr_scafkey,
       resizeToAvoidBottomInset: false,
@@ -39,13 +40,17 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(8.0),
         child: RichText(
           textAlign: TextAlign.center,
-          text: TextSpan(text: AppLocalizations.of(context)!.prmpt_noaccount, style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)), children: [
-            TextSpan(
-              text: AppLocalizations.of(context)!.prmpt_signup,
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
-              recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_SIGNUP),
-            ),
-          ]),
+          text: TextSpan(
+              text: AppLocalizations.of(context)!.prmpt_noaccount,
+              style: const TextStyle(color: Colors.black54),
+              //FIXME - Delete If not needed    //GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.black54)),
+              children: [
+                TextSpan(
+                  text: AppLocalizations.of(context)!.prmpt_signup,
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                  recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushReplacementNamed(AppRouter.ROUTE_SIGNUP),
+                ),
+              ]),
         ),
       ),
       body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -70,10 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 50),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(AppLocalizations.of(context)!.login,
-                            style: GoogleFonts.mPlusRounded1c(
-                              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                            )),
+                        child: Text(AppLocalizations.of(context)!.login, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                        //FIXME - Delete If not needed     //  GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30))
                       ),
                       const SizedBox(height: 30),
                       //Assign Email
@@ -85,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!.email,
-                            hintStyle: GoogleFonts.mPlusRounded1c(),
+                            //FIXME - Delete If not needed     // hintStyle: GoogleFonts.mPlusRounded1c(),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                             focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.orange, width: 2.0), borderRadius: BorderRadius.circular(20.0)),
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade200, width: 2.0), borderRadius: BorderRadius.circular(20.0))),
@@ -99,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         validator: (value) => (value == null || value.length < 8) ? AppLocalizations.of(context)!.val_pass : null,
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!.pass,
-                            hintStyle: GoogleFonts.mPlusRounded1c(),
+                            //FIXME - Delete If not needed    // hintStyle: GoogleFonts.mPlusRounded1c(),
                             suffixIcon: controller_pass.text.length > 0
                                 ? IconButton(
                                     onPressed: () => controller_pass.clear(),
@@ -135,7 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(AppLocalizations.of(context)!.login, style: TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(height: 8),
-                      Text(AppLocalizations.of(context)!.prmpt_frgtpass, style: GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))),
+                      Text(AppLocalizations.of(context)!.prmpt_frgtpass, style: const TextStyle(color: Colors.grey)
+                          //FIXME - Delete If not needed         GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(color: Colors.grey))
+                          ),
                     ]),
                   ),
                 );

@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_renaming_method_parameters,
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart' as prv;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:test/logic/bloc/7Connectivity/connectivity_bloc.dart';
 import 'package:test/utils/resources/localizator.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:test/utils/resources/locale_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -17,6 +17,7 @@ import 'package:test/presentation/themes/dark_theme.dart';
 import 'package:test/presentation/themes/light_theme.dart';
 import 'package:test/presentation/views/spash_screen.dart';
 import 'package:test/data/data_providers/remote/supabase_API.dart';
+import 'package:test/logic/bloc/7Connectivity/connectivity_bloc.dart';
 
 import 'logic/bloc/1Recipe/recipe_bloc.dart';
 import 'logic/bloc/6Authentication/authentication_bloc.dart';
@@ -53,47 +54,33 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ModifyRecipeImageCubit()..initialSetup()),
         BlocProvider(create: (_) => ModifyIngredientCubit()..initialSetup()),
       ],
-      child: MaterialApp(
-        supportedLocales: LocalizationManager.allLang,
-        locale: LocalizationManager.allLang[2], //const Locale('fa'),
-        title: "The Recipe Book",
-        theme: lightTheme,
-        themeMode: ThemeMode.light,
-        darkTheme: darkTheme,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        debugShowCheckedModeBanner: false,
-        // initialRoute: AppRouter.ROUTE_LOGIN,
-        onGenerateRoute: _appRouter.onGenerateRoute,
-        onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const SpashScreen())],
-      ),
+      child: prv.ChangeNotifierProvider(
+          create: (BuildContext context) => LocaleProvider(),
+          builder: (context, child) {
+            final provider = prv.Provider.of<LocaleProvider>(context);
+            // provider.resetLocale();
+            return MaterialApp(
+              supportedLocales: LocalizationManager.allLang,
+              locale: provider.locale, //const Locale('fa'),
+              title: "The Recipe Book",
+              theme: lightTheme,
+              themeMode: ThemeMode.light,
+              darkTheme: darkTheme,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              debugShowCheckedModeBanner: false,
+              // initialRoute: AppRouter.ROUTE_LOGIN,
+              onGenerateRoute: _appRouter.onGenerateRoute,
+              onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const SpashScreen())],
+            );
+          }),
     );
   }
 }
-
-// void _saveLocale() async {
-//   var prefs = await SharedPreferences.getInstance();
-
-//   String languageCode = prefs.setString('AppInfo_DefaultLocale', 'fa');
-//   // String countryCode = prefs.getString('countryCode') ?? 'ps';
-
-//   return Locale(languageCode, countryCode);
-// }
-
-// Future<Locale> _fetchLocale() async {
-//   var prefs = await SharedPreferences.getInstance();
-
-//   String languageCode = prefs.getString('AppInfo_DefaultLocale') ?? 'ar';
-//   // String countryCode = prefs.getString('countryCode') ?? 'ps';
-
-//   return Locale(languageCode); //countryCode
-// }
-
-
 
 
 //FIXME - Log out user from supabase when app is closed or paused
