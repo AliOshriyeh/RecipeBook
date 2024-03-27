@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:full_screen_image/full_screen_image.dart';
+import 'package:test/presentation/themes/light_theme.dart';
 import 'package:test/presentation/widgets/hamburger_menu.dart';
 import 'package:test/logic/cubit/4OnlineShowcase/online_showcase_cubit.dart';
 
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("LOCALE THEME: ${appLang}");
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.apptitle)), //const Text("The Recipe Bloc"),

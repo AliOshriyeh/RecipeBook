@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_renaming_method_parameters,
 
+// import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as prv;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 import 'package:test/utils/resources/localizator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:test/utils/resources/locale_provider.dart';
@@ -37,51 +39,50 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final AppRouter _appRouter = AppRouter();
-
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        //NOTE - The Order is Important. Up to Down is like Parent to Child
-        BlocProvider(create: (_) => ConnectivityBloc()..add(ConnectivityInitialEvent())),
-        BlocProvider(create: (_) {
-          AuthenticationBloc().add(const LogoutAuthEvent());
-          return AuthenticationBloc()..add(const InitAuthEvent());
-        }),
-        BlocProvider(create: (_) => OnlineCookBookBloc()..add(ResetOnlineCookBookEvent(Recipe.nullRecipe, Ingredient.nullIngredient))),
-        BlocProvider(create: (_) => RecipeBloc()..add(LoadRecipeEvent(Recipe.nullRecipe))),
-        BlocProvider(create: (_) => OnlineShowcaseCubit()..initialSetup()),
-        BlocProvider(create: (_) => ModifyRecipeImageCubit()..initialSetup()),
-        BlocProvider(create: (_) => ModifyIngredientCubit()..initialSetup()),
-      ],
-      child: prv.ChangeNotifierProvider(
-          create: (BuildContext context) => LocaleProvider(),
-          builder: (context, child) {
-            final provider = prv.Provider.of<LocaleProvider>(context);
-            // provider.resetLocale();
-            return MaterialApp(
-              supportedLocales: LocalizationManager.allLang,
-              locale: provider.locale, //const Locale('fa'),
-              title: "The Recipe Book",
-              theme: lightTheme,
-              themeMode: ThemeMode.light,
-              darkTheme: darkTheme,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              debugShowCheckedModeBanner: false,
-              // initialRoute: AppRouter.ROUTE_LOGIN,
-              onGenerateRoute: _appRouter.onGenerateRoute,
-              onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const SpashScreen())],
-            );
-          }),
-    );
+    return Sizer(builder: (context, orientation, deviceType) {
+      return MultiBlocProvider(
+          providers: [
+            //NOTE - The Order is Important. Up to Down is like Parent to Child
+            BlocProvider(create: (_) => ConnectivityBloc()..add(ConnectivityInitialEvent())),
+            BlocProvider(create: (_) {
+              AuthenticationBloc().add(const LogoutAuthEvent());
+              return AuthenticationBloc()..add(const InitAuthEvent());
+            }),
+            BlocProvider(create: (_) => OnlineCookBookBloc()..add(ResetOnlineCookBookEvent(Recipe.nullRecipe, Ingredient.nullIngredient))),
+            BlocProvider(create: (_) => RecipeBloc()..add(LoadRecipeEvent(Recipe.nullRecipe))),
+            BlocProvider(create: (_) => OnlineShowcaseCubit()..initialSetup()),
+            BlocProvider(create: (_) => ModifyRecipeImageCubit()..initialSetup()),
+            BlocProvider(create: (_) => ModifyIngredientCubit()..initialSetup()),
+          ],
+          child: prv.ChangeNotifierProvider(
+            create: (BuildContext context) => LocaleProvider(),
+            builder: (context, child) {
+              final provider = prv.Provider.of<LocaleProvider>(context);
+              return MaterialApp(
+                supportedLocales: LocalizationManager.allLang,
+                locale: provider.locale,
+                title: "The Recipe Book",
+                theme: lightTheme,
+                themeMode: ThemeMode.light,
+                darkTheme: darkTheme,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                debugShowCheckedModeBanner: false,
+                // initialRoute: AppRouter.ROUTE_LOGIN,
+                onGenerateRoute: _appRouter.onGenerateRoute,
+                onGenerateInitialRoutes: (route) => [MaterialPageRoute(builder: (_) => const SpashScreen())],
+              );
+            },
+          ));
+    });
   }
 }
-
 
 //FIXME - Log out user from supabase when app is closed or paused
 // @override

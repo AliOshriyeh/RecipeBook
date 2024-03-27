@@ -3,13 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/presentation/themes/light_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/presentation/router/app_router.dart';
-import 'package:test/utils/resources/locale_provider.dart';
 import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print(LocaleProvider().locale);
     return Scaffold(
       key: loginscr_scafkey,
       resizeToAvoidBottomInset: false,
@@ -55,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          //FIXME - Make History
+          //FIXME - Make History a Multi-Selectable Option (Scrollable)
           if (state.status == UserLoginStatus.READY || state.status == UserLoginStatus.LOGGEDOUT) {
             var importedLoginHistory = state.history!.last.split('|');
             var importedEmail = importedLoginHistory[0];
@@ -135,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           backgroundColor: MaterialStatePropertyAll(Theme.of(context).buttonTheme.colorScheme!.primary),
                           shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                         ),
-                        child: Text(AppLocalizations.of(context)!.login, style: TextStyle(color: Colors.white)),
+                        child: Text(AppLocalizations.of(context)!.login, style: const TextStyle(color: Colors.white)),
                       ),
                       const SizedBox(height: 8),
                       Text(AppLocalizations.of(context)!.prmpt_frgtpass, style: const TextStyle(color: Colors.grey)

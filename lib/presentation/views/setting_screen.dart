@@ -30,9 +30,6 @@ class SettingScreen extends StatelessWidget {
                   onTap: () {
                     final provider = prv.Provider.of<LocaleProvider>(context, listen: false);
                     provider.setLocale(thisLocale);
-                    // print("BEFORE: ${provider.locale}");
-                    // provider.resetLocale();
-                    // print("AFTER: ${provider.locale}");
                   },
                 );
               }).toList(),

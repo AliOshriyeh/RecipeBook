@@ -7,8 +7,9 @@ Locale appLang = LocaleProvider().locale;
 bool right2left = (appLang == const Locale('fa') || appLang == const Locale('ar')) ? true : false;
 
 ThemeData lightTheme = ThemeData(
+    textTheme: ThemeData.light().textTheme.apply(fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah'),
+    primaryTextTheme: ThemeData.light().textTheme.apply(fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah'),
     brightness: Brightness.light,
-    fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah',
     //FIXME - Make a theme that applies to all inputdecorations. main focus here is different borders!
     // inputDecorationTheme: InputDecorationTheme(
     //     contentPadding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
