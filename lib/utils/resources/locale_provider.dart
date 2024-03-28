@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app_restart/flutter_app_restart.dart';
 
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/utils/resources/localizator.dart';
@@ -41,8 +41,7 @@ class LocaleProvider extends ChangeNotifier {
     _prefLocale = newlocale;
     notifyListeners();
 
-    final result = await FlutterRestart.restartApp();
-    print(result);
+    Restart.restartApp(webOrigin: '[your main route]');
   }
 }
 
