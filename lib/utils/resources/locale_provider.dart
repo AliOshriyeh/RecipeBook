@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/presentation/views/spash_screen.dart';
 
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/utils/resources/localizator.dart';
@@ -29,8 +29,16 @@ class LocaleProvider extends ChangeNotifier {
   void setLocale(Locale newlocale) async {
     print(printSignifier + "Setting Preferred Locale " + newlocale.languageCode);
 
-    if (newlocale == locale) return; //Already Active Locale Safety
-    if (!LocalizationManager.allLang.contains(locale)) return; //Not-existing Locale Safety
+    if (newlocale == locale) {
+      //Already Active Locale Safety
+      print(printSignifier + "Selected Locale is Already Active");
+      return null;
+    }
+    if (!LocalizationManager.allLang.contains(locale)) {
+      //Not-existing Locale Safety
+      print(printSignifier + "Selected Locale isn't Found");
+      return null;
+    }
 
     var prefs = await SharedPreferences.getInstance();
     bool languageCode = await prefs.setString('AppInfo_DefLocale', newlocale.languageCode);
@@ -39,9 +47,10 @@ class LocaleProvider extends ChangeNotifier {
     // print("Lan Locale: $Lan");
 
     _prefLocale = newlocale;
-    notifyListeners();
+    // Navigator.pushAndRemoveUntil(_, MaterialPageRoute(builder: (_) => const SpashScreen()), (route) => false);
 
-    Restart.restartApp(webOrigin: '[your main route]');
+    notifyListeners();
+    // Restart.restartApp();
   }
 }
 

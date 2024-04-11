@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+import 'package:test/presentation/widgets/localed_align.dart';
 
 import 'package:test/utils/constants/enums.dart';
 import 'package:test/utils/constants/globals.dart';
 import 'package:test/presentation/router/app_router.dart';
 import 'package:test/logic/bloc/6Authentication/authentication_bloc.dart';
+import 'package:test/utils/resources/locale_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -70,10 +72,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       const SizedBox(height: 50),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(AppLocalizations.of(context)!.login, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                        //FIXME - Delete If not needed     //  GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30))
+                      AlignLocaleBase(
+                        context: context,
+                        chicho: Text(AppLocalizations.of(context)!.login, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                        //FIXME - Delete If not needed     //GoogleFonts.mPlusRounded1c(textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30))
                       ),
                       const SizedBox(height: 30),
                       //Assign Email

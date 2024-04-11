@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test/utils/resources/locale_provider.dart';
 
-Locale appLang = LocaleProvider().locale;
+// Locale appLang = LocaleProvider().locale;
 // Locale deviceLang = PlatformDispatcher.instance.locale;
 // String deviceLang = Platform.localeName.substring(0, 2);
-bool right2left = (appLang == const Locale('fa') || appLang == const Locale('ar')) ? true : false;
+bool right2left = true; // (appLang == const Locale('fa') || appLang == const Locale('ar')) ? true : false;
 
 ThemeData lightTheme = ThemeData(
     textTheme: ThemeData.light().textTheme.apply(fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah'),
@@ -20,7 +19,7 @@ ThemeData lightTheme = ThemeData(
       elevation: 0,
       backgroundColor: Colors.orange.shade800,
       iconTheme: const IconThemeData(color: Colors.white),
-      titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: right2left ? 'Vazirmatn' : 'FleurDeLeah'),
     ),
     colorScheme: ColorScheme.light(
       outline: Colors.amberAccent.shade700,
